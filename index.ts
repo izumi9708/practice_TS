@@ -224,7 +224,7 @@ const school = new School();
 school.addStudent(student.getAge(),student.getName());
 
 
-// 1 ジェネリクスの使い方を説明
+// 1 ジェネリクスの使い方
 
 // 使用する際に型を指定することができる
 function sample<T>(a:T){
@@ -233,7 +233,7 @@ function sample<T>(a:T){
 
 sample<number>(1)
 
-// ２ 継承の使い方を説明
+// ２ 継承の使い方
 class Parent {
   public name:string;
   public age :number;
