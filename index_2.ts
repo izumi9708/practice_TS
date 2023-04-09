@@ -705,3 +705,79 @@ class Memo {
   }
 
 }
+
+
+// 以下の要件を満たす関数 curry を実装してください。
+// 関数と、その関数の最初の引数となる値を受け取り、新しい関数を返す。
+// 新しい関数は、最初に渡された値を第1引数に渡して、元の関数を実行する。
+
+function curry(fn: (a: any, b: any) => any, arg1: any) {
+  return function(arg2: any) {
+    return fn(arg1, arg2);
+  };
+}
+
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+const add10 = curry(add, 10);
+console.log(add10(5)); // 15
+
+
+// 以下の要件を満たす関数 isPalindrome を実装してください。
+// 引数に文字列を受け取り、その文字列が回文であるかどうかを判定する。
+// 大文字小文字は区別しない。
+
+function isPalindrome(str:string):boolean{
+  const reverse = str.split('').reverse().join('');
+  
+  return str === reverse;
+}
+
+isPalindrome('たけやぶやけた')
+
+
+// 以下の配列の要素の中で、重複しているものをすべて抽出し、新しい配列として返す関数を実装してください。
+
+// 元の配列の要素の順序を保持する必要がある。
+// 新しい配列の要素の順序は元の配列の要素の順序に従う。
+// 要素の重複は1つに限定する（同じ要素が複数回出現する場合は、新しい配列には1つだけ含める）。
+
+function test(array:number[]):number[]{
+  const newArray = array.filter((val,index,array)=> array.indexOf(val) !== index);
+
+  return Array.from(new Set(newArray))
+}
+
+test([1, 3, 3, 5, 8, 8, 9, 9, 10]);
+
+
+
+// 以下の要件を満たす関数を実装してください。
+
+// 関数は、数値の引数を一つ受け取る。
+// 関数は、次の条件に従って文字列を返す。
+// 引数が 3 で割り切れる場合は、"Fizz" を返す。
+// 引数が 5 で割り切れる場合は、"Buzz" を返す。
+// 引数が 3 と 5 で割り切れる場合は、"FizzBuzz" を返す。
+// それ以外の場合は、引数を文字列に変換して返す。
+// 例えば、引数が 3 の場合は "Fizz"、引数が 5 の場合は "Buzz"、引数が 15 の場合は "FizzBuzz"、引数が 4 の場合は "4" を返します。
+
+function returnStr(number:number):string{
+  if(number % 3 === 0 && number % 5 === 0){
+    return 'FizzBuzz';
+
+  }else if(number % 3 === 0){
+    return 'Fizz';
+
+  }else if(number % 5 === 0){
+    return 'Buzz';
+
+  }else {
+    return String(number);
+  }
+}
+
+console.log(returnStr(15))
+
