@@ -181,4 +181,94 @@ const obj:Person = {
 console.log(getPersonName(obj))
 
 
-// 数字を受け取り、その2乗を返す関数型 SquareNumberFn を定義してください。
+// 数字を受け取り、その2乗を返す関数型 SquareNumberFn を定義してください
+type SquareNumberFn = (num:number) => number;
+
+const squareNumber:SquareNumberFn = (num) => num * num;
+console.log(squareNumber(6));
+
+
+
+// Animal クラスを定義し、name プロパティを持ち、speak メソッドを持つようにしてください。
+class Animal {
+  public name:string;
+
+  constructor(name:string){
+    this.name = name;
+  }
+
+  speak(){}
+}
+
+
+// Dog クラスを定義し、Animal クラスを継承し、speak メソッドをオーバーライドして barks. と出力するようにしてください。
+class Dog extends Animal {
+  constructor(name:string){
+    super(name);
+    
+  }
+  speak(){
+    console.log('barks');
+  }
+}
+
+const dog = new Dog('dog');
+dog.speak()
+
+
+// ジェネリック関数 identity を定義してください。この関数は引数として受け取った値をそのまま返しま
+function identity<T>(x:T):T{
+  return x;
+}
+
+identity<string>('a')
+
+
+// Car 型を定義し、make、model、year プロパティを持つようにしてください。さらに、Partial 型を用いて PartialCar 型を定義してください。
+
+type CarPropery =  {
+  make:number
+  model:string
+  year:number
+}
+
+type PartialCar = Partial<CarPropery>;
+
+
+class Car  {
+  public make:number
+  public model:string
+  public year:number
+
+  constructor(obj:PartialCar){
+    this.make = obj.make;
+    this.model = obj.model
+    this.year = obj.year
+  }
+}
+
+const car = new Car({ make: 2022, model: "Model X", year: 2022 })
+
+
+// Animal クラスを拡張して Bird インターフェースを実装する WingedAnimal クラスを定義してください。WingedAnimal クラスは、Animal クラスの機能をすべて継承し、さらに以下の Bird インターフェースのプロパティとメソッドを実装します。
+
+// wingspan プロパティ (数値)
+// fly メソッド (戻り値なし)
+// また、WingedAnimal クラスのコンストラクタは、引数として Animal クラスのコンストラクタで受け取る引数に加えて、wingspan 引数も受け取ります。
+
+interface Bird {
+  wingspan:number
+  fly():void
+}
+
+class WingedAnimal extends Animal implements Bird {
+  public wingspan:number
+
+  constructor(wingspan:number,name:string){
+    super(name);
+    this.wingspan = wingspan;
+  }
+
+  fly(){}
+}
+
