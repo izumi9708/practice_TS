@@ -1,6 +1,3 @@
-
-
-
 // Person というクラスがあり、name、age、email、address というプロパティを持っています。このクラスに対して、email プロパティだけを変更した新しいインスタンスを作成する静的メソッド withNewEmail を実装してください。
 
 class Person {
@@ -271,4 +268,95 @@ class WingedAnimal extends Animal implements Bird {
 
   fly(){}
 }
+
+
+// オプショナルプロパティを持つインターフェースの定義方法を説明してください。
+
+interface Optional {
+  name?:string
+  age?:number
+}
+
+
+// 以下のような Partial 型の定義がある場合、この型を使用して指定されたプロパティを持つオブジェクトの一部のプロパティを省略した新しいオブジェクトを作成する方法を示してください。
+
+interface PartialExample {
+  name: string;
+  age: number;
+  address: string;
+}
+
+type PartialObject = Partial<PartialExample>;
+
+const exampleObj:PartialObject = {
+  name:'taro',
+  age:40,
+  address:'tokyo'
+}
+
+console.log(exampleObj)
+
+
+// 以下のような条件付き型の定義がある場合、この型を使用して指定された型 T が boolean 型かどうかを判定する方法を示してください。
+type IsBoolean<T> = T extends boolean ? true : false;
+
+const judge:IsBoolean<boolean> = true;
+
+
+// 以下のような条件付き型の定義がある場合、この型を使用して指定された型 T が配列かどうかを判定する方法を示してください。
+type IsArray<T> = T extends any[] ? true : false;
+
+const array:IsArray<number[]> = true;
+
+
+// 以下のようなインターフェースの定義がある場合、このインターフェースを継承する新しいインターフェースを定義し、新しいインターフェースで追加されたプロパティを持つオブジェクトを作成する方法を示してください。
+
+interface Example {
+  name: string;
+  age: number;
+}
+
+interface Address extends Example {
+  address:string
+}
+
+const obj:Address = {
+  name:'taro',
+  age:20,
+  address:'tokyo'
+}
+
+
+// 以下のような配列がある場合、Array.filter()を使用して、数値が5以下の要素だけを含む新しい配列を作成してください。
+const arr: number[] = [2, 6, 8, 1, 3, 5, 7, 9];
+
+const newArr:number[] = arr.filter(val => val <= 5);
+console.log(newArr)
+
+
+// ある数値配列が与えられたとき、その中で出現回数が最も多い要素を返す関数findMostFrequentを実装してください。
+
+
+function findMostFrequent<T extends string | number | symbol>(arr: T[]): T | null {
+  const fil = arr.reduce((prev, current) => {
+    prev[current] = prev[current] ? prev[current] + 1 : 1
+    return prev
+  }, {} as Record<T, number>)
+  
+  const max    = Object.keys(fil).map(val => fil[val]).reduce((a,b) => Math.max(a,b));
+  const result = Object.keys(fil).find(val => fil[val] == max)
+
+  return result ? result as unknown as T : null
+  // unknown型を挟むことによって、unknown型とT型の間に変換可能性があると判断
+}
+
+const arr1 = [1, 3, 3, 3, 2, 2, 2, 2];
+const arr2 = ['a', 'b', 'c', 'c', 'c', 'd', 'd', 'e', 'e', 'e', 'e'];
+
+console.log(findMostFrequent<number>(arr1)); // => 2
+console.log(findMostFrequent<string>(arr2)); // => 'e'
+
+
+
+
 
