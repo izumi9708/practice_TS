@@ -357,6 +357,68 @@ console.log(findMostFrequent<number>(arr1)); // => 2
 console.log(findMostFrequent<string>(arr2)); // => 'e'
 
 
+// 以下のような、文字列の配列 strings と、ターゲットの文字列 target が与えられたとき、strings 中で target に一番近い文字列を返す関数 findClosestString を TypeScript で実装してください。strings の中に target と等しい文字列がある場合は、その文字列を返してください。
 
+// function findClosestString(array:string[],target:string):string {
+//   let obj = {}
+//   const result = array.forEach( val => {
+//     const findArray   = val.split('')
+//     const targetArray = target.split('')
+    
+//     const result = findArray.filter(item => targetArray.includes(item))
+
+//     console.log(result)
+
+//     obj[val] = result.length
+//   })
+
+//   console.log(obj)
+// }
+
+// const strings = ['apple', 'banana', 'cherry', 'date', 'elderberry'];
+
+// console.log(findClosestString(strings, 'berry')); // => 'cherry'
+
+// 解答
+function findClosestString(arr: string[], str: string): string | null {
+  let closest: string | null = null;
+  let minDiff = Infinity;
+  for (const s of arr) {
+    const diff = levenshteinDistance(s, str);
+    if (diff < minDiff) {
+      minDiff = diff;
+      closest = s;
+    }
+  }
+  return closest;
+}
+
+function levenshteinDistance(s1: string, s2: string): number {
+  const m = s1.length;
+  const n = s2.length;
+  const distances = new Array<number[]>(m + 1);
+  for (let i = 0; i <= m; i++) {
+    distances[i] = new Array<number>(n + 1);
+    distances[i][0] = i;
+  }
+  for (let j = 1; j <= n; j++) {
+    distances[0][j] = j;
+  }
+  for (let j = 1; j <= n; j++) {
+    for (let i = 1; i <= m; i++) {
+      const deletion = distances[i - 1][j] + 1;
+      const insertion = distances[i][j - 1] + 1;
+      const substitution = distances[i - 1][j - 1] + (s1[i - 1] === s2[j - 1] ? 0 : 1);
+      distances[i][j] = Math.min(deletion, insertion, substitution);
+    }
+  }
+  return distances[m][n];
+}
+
+const strings = ['apple', 'banana', 'cherry', 'date', 'elderberry'];
+console.log(findClosestString(strings, 'berry')); // => 'cherry'
+console.log(findClosestString(strings, 'bananna')); // => 'banana'
+console.log(findClosestString(strings, 'daple')); // => 'apple'
+console.log(findClosestString(strings, 'fig')); // => 'date'
 
 
