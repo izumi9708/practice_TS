@@ -422,3 +422,155 @@ console.log(findClosestString(strings, 'daple')); // => 'apple'
 console.log(findClosestString(strings, 'fig')); // => 'date'
 
 
+// 以下の関数 reverseWords は文字列を引数として受け取り、その中の各単語の文字列を逆順にし、全体を連結した新しい文字列を返すものです。この関数の実装を完成させてください。ただし、単語とはスペースで区切られた文字列のことを指します。
+
+function reverseWords(str: string): string {
+  const words = str.split(" ");
+
+  words.reverse();
+
+  return words.join(" ");
+}
+
+console.log(reverseWords("Hello World")); // "olleH dlroW"
+console.log(reverseWords("The quick brown fox")); // "ehT kciuq nworb xof"
+
+
+// filterUnique という名前のジェネリック関数を実装してください。この関数は、配列を受け取り、配列内で重複しない値のみを含む新しい配列を返します。
+
+// 入力配列の要素は、任意の型の値が入ることができます。
+// 出力配列の要素の順序は、元の配列の順序と異なっていても構いません。
+// 入力配列に重複する要素があっても、出力配列には含まれなければなりません。
+
+function filterUnique<T>(array:T[]):T[]{
+  return array.filter((val,index,array) => array.indexOf(val) === array.lastIndexOf(val))
+}
+
+const arr1 = [1, 2, 3, 2, 1, 4, 5, 4];
+const arr2 = ['a', 'b', 'c', 'd', 'c', 'e', 'f', 'd'];
+
+console.log(filterUnique(arr1)); // [1, 2, 3, 4, 5]
+console.log(filterUnique(arr2)); // ['a', 'b', 'c', 'd', 'e', 'f']
+
+
+// 以下のインターフェースを使用して、オブジェクトの配列から指定されたプロパティの値の配列を返す関数 pluck を実装してください。
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  age: number;
+}
+
+const users: User[] = [
+  { id: 1, name: "John", email: "john@example.com", age: 25 },
+  { id: 2, name: "Jane", email: "jane@example.com", age: 30 },
+  { id: 3, name: "Bob", email: "bob@example.com", age: 20 }
+];
+
+function pluck(obj:User[],property:string):string[] {
+  return obj.map(val => val[property])
+}
+
+const result = pluck(users, "name");
+console.log(result); // => ["John", "Jane", "Bob"]
+
+
+// 2つの配列が与えられます。これらの配列をマージして、重複を削除し、昇順で並べ替えた新しい配列を返すmergeArrays関数を実装してください。ただし、配列には数値のみ含まれるものとします。
+
+type mergeArrays = (arr1:number[],arr2:number[]) => number[];
+
+const mergeArrays:mergeArrays = (arr1,arr2) => {
+  const merge = Array.from(new Set([...arr1,...arr2]));
+  return merge.sort((a,b) => a - b)
+  
+}
+
+mergeArrays([3, 5, 2, 8], [5, 9, 8, 2]);
+
+
+
+// 以下の配列のうち、連続している数字の範囲を表示する関数 getRanges を実装してください。ただし、連続している数字とは、配列内で隣り合った数字の差が1であるような数字の組み合わせを指します。
+
+
+const arr = [1, 2, 3, 5, 6, 7, 8, 10, 11];
+// const arr = [11,10,9,8]
+
+type getRanges = (array:number[]) => number[]
+
+const getRanges:getRanges = (array) => {
+  let last;
+  let num;
+  let array3 = []
+  let resultArray = [];
+  
+  const reduce = array.reduce((a,b) => {
+    if( b - a == 1 || b - a == -1){
+      num = a;
+      array3.push(a);
+
+    }else {
+      last = a;
+      resultArray.push(`${array3[0]}-${last}`)
+      array3 = [];
+    }
+    
+    return b
+  })
+
+  return resultArray
+
+}
+
+console.log(getRanges(arr)); // ["1-3", "5-8", "10-11"]
+
+
+
+// 数値の配列が与えられたとき、配列内のすべての偶数を2倍にし、すべての奇数を3倍にする関数 multiplyEvensAndOdds を実装してください。ただし、元の配列は変更せず、新しい配列を返すものとします。
+
+
+function multiplyEvensAndOdds(array){
+  return array.map( val => val % 2 === 0 ? val * 2 : val * 3)
+}
+
+multiplyEvensAndOdds([1, 2, 3, 4, 5, 6]) // [3, 4, 9, 8, 15, 12]
+multiplyEvensAndOdds([2, 4, 6, 8]) // [4, 8, 12, 16]
+multiplyEvensAndOdds([1, 3, 5, 7]) // [3, 9, 15, 21]
+
+
+
+// 以下のような配列があるとき、配列内の要素を2つずつのペアにし、各ペア内の要素を足し合わせた新しい配列を返す関数を作成してください。
+
+const pairwiseSum = (array: number[]): number[] => {
+  let newArray: number[] = [];
+
+  // ２つずつのペアにするためにインデックス２ずつ回す
+  for (let i = 0; i < array.length; i += 2) {
+    newArray.push(array[i] + array[i + 1]);
+  }
+
+  return newArray;
+};
+
+console.log(pairwiseSum([1, 2, 3, 4, 5, 6])); // [3, 7, 11]
+console.log(pairwiseSum([0, -1, 1, 2, -2, 3])); // [-1, 3, 1]
+
+
+
+// 配列内の全ての要素を文字列型に変換し、各要素の文字数の和を求める関数を実装してください。
+
+// Input: [123, 45, 678]
+// Output: 6 (数字1の文字数1 + 数字2の文字数1 + 数字3の文字数1 + 数字4の文字数1 + 数字5の文字数1 + 数字6の文字数1 + 数字7の文字数1 + 数字8の文字数1 = 6)
+
+// Input: ['JavaScript', 'Python', 'Ruby']
+// Output: 16 (各要素の文字数の和)
+
+
+function stringLengthSum<T>(array:T[]):number{
+  return array.map(val => String(val)).map(val2 => val2.length).reduce((prev,current) => prev + current)
+}
+
+stringLengthSum(['hello', 'world']); // => 10
+stringLengthSum(['JavaScript', 'Python', 'PHP']); // => 18
+
+
