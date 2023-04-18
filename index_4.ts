@@ -213,3 +213,182 @@ function getUsersUnder30(array:userFace[]):userFace[]{
 
 const usersUnder1 = getUsersUnder30(users2);
 // console.log(usersUnder1)
+
+
+// array という配列が与えられた時、配列の要素のうち、 item というプロパティが value という値を持っている要素を抽出する関数 findItemByValue(array: any[], value: any): any[] を実装してください。ただし、引数の配列の要素には必ず item というプロパティが含まれると仮定して良いものとします。また、引数の配列の要素の型は任意とします。
+
+type findArray = {
+  id:number,
+  item:string
+}
+
+const array:findArray[] = [
+  { id: 1, item: 'apple' },
+  { id: 2, item: 'banana' },
+  { id: 3, item: 'orange' },
+  { id: 4, item: 'apple' },
+  { id: 5, item: 'orange' },
+];
+
+function findItemByValue<T extends {item:string}>(array:T[],value:string):T[]{
+  return array.filter(val => val.item == value)
+}
+
+const result = findItemByValue(array,'apple')
+// console.log(result)
+
+
+
+
+// 関数をカリー化する curry 関数を実装してください。
+
+function square(n: number): number {
+  return n * n;
+}
+
+function multiply(a: number, b: number): number {
+  return a * b;
+}
+
+// function curry(func){ 
+//    if(func.name == 'square'){
+//      return function square(n:number){
+//       return n * n;
+//      }
+
+//    }else {
+//      return function multiply(x:number){
+//         return function(y:number){
+//           return x * y;
+//         }
+//      }
+//    }
+// }
+
+function curry<F extends (...args: any[]) => any>(func: F): F {
+  const arity = func.length; 
+  // 引数の数を取得
+  return function curried(...args: any[]) {
+    //スプレット構文で受け取っているのでargsは配列
+    if (args.length >= arity) { 
+      // 引数が揃った場合は関数を実行して結果を返す
+      return func(...args);
+    } else { 
+      // 引数が足りない場合は次の引数を取る関数を返す
+      return function (...nextArgs: any[]) {
+        return curried(...args.concat(nextArgs));
+      };
+    }
+  } as F; 
+  // F型の戻り値が必要なので型アサーションを行う
+}
+
+
+const curriedSquare = curry(square);
+// console.log(curriedSquare(3)); // 9
+
+const curriedMultiply = curry(multiply);
+// console.log(curriedMultiply(2)(3)); // 6
+// console.log(curriedMultiply(2, 3)); // 6
+
+
+// 以下の関数を TypeScript でカリー化してください。
+function greet(name: string, message: string): string {
+  return `${name} says: ${message}`;
+}
+
+function curry2(func):any{
+  return function curryed2(...arg:any[]){
+    if(func.length == arg.length){
+      return func(...arg)
+
+    }else {
+      return function curryed3(...nextArgs){
+        return func(...arg,...nextArgs)
+      }
+    }
+  }
+}
+
+const curriedGreet = curry2(greet)// ここにカリー化後の関数を実装する
+
+// console.log(curriedGreet('John')('Hello')); // "John says: Hello"
+// console.log(curriedGreet('Alice')('Nice to meet you')); // "Alice says: Nice to meet you"
+// console.log(curriedGreet('Bob', 'How are you?')); // "Bob says: How are you?"
+
+
+
+// 以下のような配列が与えられた場合、配列内の要素が偶数なら'even'、奇数なら'odd'を出力する関数を作成してください。ただし、for文は使用しないでください。
+
+const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+function evenAndOdd(array:number[]):string[]{
+  return array.map(val => val % 2 === 0 ? 'even' : 'odd')
+}
+
+const result3 = evenAndOdd(arr)
+// console.log(result3)
+
+
+// ユーザー情報から、次のようなオブジェクトを作成する関数convertToRecordを実装してください。
+// ただし、引数と戻り値の型を正確に指定してください。
+// {
+  //   'Alice': { name: 'Alice', age: 25 },
+  //   'Bob': { name: 'Bob', age: 30 },
+  //   'Charlie': { name: 'Charlie', age: 35 },
+  // }
+
+interface convert {
+  name:string
+  age:number
+}
+
+const users = [
+  { name: 'Alice', age: 25 },
+  { name: 'Bob', age: 30 },
+  { name: 'Charlie', age: 35 },
+];
+
+function convertToRecord(array:convert[]):{[key:string]:convert}[]{
+  return array.map(val => ({[val.name]:{...val}}))
+  // キー名に対する値を指定するには : を使います。そのため、{ val.name: {...val} }のように直接式を記述すると、JavaScriptの文法エラーになります。
+  // 新しいキーを追加する場合には[key]:valと記述しないとエラー
+}
+
+convertToRecord(users)
+
+
+// 配列から、年齢が 25 歳以上の人物の名前だけを取り出して、配列で返す関数を作成してください。ただし、戻り値の型は string[] としてください。
+
+const data = [
+  { name: 'John', age: 25 },
+  { name: 'Jane', age: 30 },
+  { name: 'Bob', age: 20 }
+];
+
+interface OverData {
+  name:string
+  age:number
+}
+
+function over25(array:OverData[]):string[]{
+  return array.filter(val => val.age >= 25).map(val => val.name)
+}
+
+console.log(over25(data))
+
+
+// 以下の配列から、要素の合計値を計算する関数 sum を作成してください。
+// 関数 sum の引数は配列でなければなりません。
+// 引数の要素の型は、数値型とは限りません。
+// 関数 sum の戻り値は、引数の要素の合計値です。
+
+const sumArr = [1, 2, 3, 4, 5];
+// const sumArr = ['a','b'];
+
+function sum<T extends number|string>(array:T[]):T{
+  return array.reduce((a,b) => (typeof a === 'number' ? a + Number(b) : `${a}${b}`) , typeof array[0] === 'number' ? 0 : '') as T
+}
+
+
+console.log(sum(sumArr))
