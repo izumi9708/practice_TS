@@ -392,3 +392,135 @@ function sum<T extends number|string>(array:T[]):T{
 
 
 console.log(sum(sumArr))
+
+
+
+// 以下の配列から、重複している要素を削除する関数を作成してください。
+
+const data1 = [1, 2, 3, 4, 2, 3];
+
+function removeDep(array:number[]):number[]{
+  return Array.from(new Set(array))
+}
+
+console.log(removeDep(data1))
+
+
+type User = {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+}
+// 次のような型を作成してください。
+// type UserUpdate = {
+//   id?: number;
+//   name?: string;
+//   age?: number;
+//   email?: string;
+// }
+
+type UserUpdate = Partial<User>;
+
+
+// 以下の配列fruitsを使用して、fruitTypesという型を作成してください。ただし、fruitTypesは'apple' | 'banana' | 'orange'のいずれかの文字列リテラル型となるようにしてください。
+
+const fruits = ['apple', 'banana', 'orange'] as const;
+
+type fruitType = 'apple' | 'banana' | 'orange';
+
+function filterFruit(array:readonly string[],fruitType:fruitType):string[]{
+  return array.filter(val => val === fruitType);
+}
+
+console.log(filterFruit(fruits,'orange'))
+
+
+
+let str: any    = '123' ;
+let strLength:number = (<string>str).length;
+
+
+
+// 配列の要素の型は { name: string, age: number } です。
+// この配列を受け取り、name プロパティのみを抽出した新しい配列を返す関数 extractNames を実装してください。
+
+// 引数として渡される配列は readonly である。
+// 関数の返り値は readonly な string の配列である。
+
+const data = [
+  { name: 'John', age: 25 },
+  { name: 'Jane', age: 30 },
+  { name: 'Bob', age: 20 }
+];
+
+function extractNames(array:readonly {name: string, age: number}[]):readonly string[]{
+  return array.map(val => val.name)
+}
+
+const names = extractNames(data);
+console.log(names); // ['John', 'Jane', 'Bob']
+
+
+function calculateArea(radius:number|string):number{
+  if( typeof radius == 'string' )radius = Number(radius);
+  return Math.PI * radius ** 2;
+}
+
+console.log(calculateArea('5'));
+
+
+// users配列から、25歳以上のユーザーのみを抽出する関数filterUsersを実装してください。ただし、filterメソッドを使用してください。また、関数の返り値は新しい配列である必要があります。
+
+type User2 = {
+  id: number,
+  name: string,
+  email: string,
+  age: number,
+};
+
+const users: User2[] = [
+  { id: 1, name: 'John Doe', email: 'john@example.com', age: 25 },
+  { id: 2, name: 'Jane Smith', email: 'jane@example.com', age: 30 },
+  { id: 3, name: 'Bob Johnson', email: 'bob@example.com', age: 20 },
+];
+
+function filterUsers(array:User2[]):User2[]{
+  return array.filter(val => val.age > 25)
+}
+
+console.log(filterUsers(users))
+
+// Person型の配列 peopleがあります。
+// peopleの要素がageの降順になるようにソートした新しい配列を返す関数sortByAgeDescendingを実装してください。
+// emailがある場合は、ageの降順の中で、emailが存在しない要素よりも前に並ぶようにしてください。
+// emailがない要素同士の並び順は問いません。
+// ソートアルゴリズムにはバブルソートを使用してください。
+
+
+
+type Person = {
+  name: string;
+  age: number;
+  email?: string;
+};
+
+const people: Person[] = [
+  {  name: "Alice", age: 23 , email:'aaa@' },
+  {  name: "Bob", age: 31 },
+  {  name: "Charlie", age: 19 },
+  {  name: "Dave", age: 45  },
+  {  name: "Eve", age: 29 , email:'bbb@' },
+];
+
+function sortByAgeDescending(array:Person[]):Person[]{
+  const emailSort = array.sort((a,b) => a.age > b.age ? -1 : 1 ).sort((a,b) => a.email ? -1 : 1)
+  return emailSort
+}
+
+console.log(sortByAgeDescending(people))
+
+
+
+
+
