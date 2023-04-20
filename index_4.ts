@@ -522,5 +522,176 @@ console.log(sortByAgeDescending(people))
 
 
 
+// 配列内のオブジェクトを特定のプロパティの値で昇順にソートする関数 sortByPropAsc を、以下のような型定義が与えられた上で実装してください。ただし、配列として渡されたオブジェクトの型は、型引数 T を使用して指定されます。
+
+type Person = {
+  name: string;
+  age: number;
+  email: string;
+};
+
+const people: Person[] = [
+  { name: 'Alice', age: 23, email: 'alice@example.com' },
+  { name: 'Bob', age: 31, email: 'bob@example.com' },
+  { name: 'Charlie', age: 19, email: 'charlie@example.com' },
+  { name: 'Dave', age: 45, email: 'dave@example.com' },
+  { name: 'Eve', age: 29, email: 'eve@example.com' },
+];
+
+function sortByPropAsc<T>(array:T[],str:string):T[]{
+  return array.sort((a,b) => a[str] - b[str])
+}
+
+// console.log(sortByPropAsc(people, 'age'))
+
+
+
+// User 型の配列を引数として受け取り、全てのユーザーの年齢の合計値を返す関数 calculateTotalAge を実装してください。
+// User 型の配列を引数として受け取り、年齢が30歳以上であるユーザーのみを抽出して返す関数 filterUsersOver30 を実装してください。
+// User 型の配列を引数として受け取り、市が "Tokyo" のユーザーのみを抽出して返す関数 filterUsersInTokyo を実装してください。
+
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  age: number;
+  address: {
+    zipcode: string;
+    prefecture: string;
+    city: string;
+  };
+};
+
+const users: User[] = [
+  {
+    id: 1,
+    name: 'Alice',
+    email: 'alice@example.com',
+    age: 25,
+    address: {
+      zipcode: '100-0001',
+      prefecture: 'Tokyo',
+      city: 'Chiyoda',
+    },
+  },
+  {
+    id: 2,
+    name: 'Bob',
+    email: 'bob@example.com',
+    age: 35,
+    address: {
+      zipcode: '160-0007',
+      prefecture: 'Tokyo',
+      city: 'Shinjuku',
+    },
+  },
+  {
+    id: 3,
+    name: 'Charlie',
+    email: 'charlie@example.com',
+    age: 30,
+    address: {
+      zipcode: '530-0001',
+      prefecture: 'Osaka',
+      city: 'Kita',
+    },
+  },
+  {
+    id: 4,
+    name: 'Dave',
+    email: 'dave@example.com',
+    age: 20,
+    address: {
+      zipcode: '150-0000',
+      prefecture: 'Tokyo',
+      city: 'Shibuya',
+    },
+  },
+];
+
+function calculateTotalAge(array:User[]):number{
+  return array.map(val => val.age).reduce((a,b) => a + b)
+}
+
+// console.log(calculateTotalAge(users))
+
+function filterUsersOver30(array:User[]):User[]{
+  return array.filter(val => val.age > 30)
+}
+
+// console.log(filterUsersOver30(users))
+
+function filterUsersInTokyo(array:User[]):User[]{
+  return array.filter(val => val.address.city == 'Tokyo' )
+}
+
+// console.log(filterUsersInTokyo(users))
+
+
+
+// 「User」という型を持つ配列が与えられたとき、各Userが持つ「address」というオブジェクトの「postalCode」と「prefecture」を使って、都道府県ごとに配列をまとめた新しいオブジェクトを返す関数を実装してください。
+
+// 例えば、以下のような入力が与えられたとき、以下のような出力が得られるようにすることを目指してください。
+
+const users2: User2[] = [
+  {
+    id: 1,
+    name: "Alice",
+    age: 24,
+    address: {
+      postalCode: "123-4567",
+      prefecture: "Tokyo",
+      city: "Chiyoda-ku",
+      building: "ABC Building 101",
+    },
+  },
+  {
+    id: 2,
+    name: "Bob",
+    age: 31,
+    address: {
+      postalCode: "987-6543",
+      prefecture: "Osaka",
+      city: "Chuo-ku",
+      building: "XYZ Building 202",
+    },
+  },
+  {
+    id: 3,
+    name: "Charlie",
+    age: 19,
+    address: {
+      postalCode: "567-8901",
+      prefecture: "Tokyo",
+      city: "Shibuya-ku",
+      building: "DEF Building 303",
+    },
+  },
+];
+
+type User2 = {
+  id:number,
+  name:string
+  age:number,
+  address:{
+    postalCode:string,
+    prefecture:string,
+    city:string,
+    building:string
+  }
+}
+
+function cityWrap(array:User2[]){
+  const resultArray = {};
+  const result = array.map(val => {
+    const {prefecture} = val.address;
+    (!resultArray[prefecture]) ? resultArray[prefecture] = [val] : resultArray[prefecture].push(val)
+  })
+
+  return resultArray;
+}
+
+// console.log(cityWrap(users2))
+
 
 
