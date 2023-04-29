@@ -703,6 +703,95 @@ console.log(ilterUsersByAgeRange(users3,ageRanges))
 
 
 
+// ユーザーのリストをフィルタリングする関数filterUsersを実装してください。
+// users: User[]: フィルタリングする対象のユーザーリスト
+// filter: Filter: フィルタ条件を表すオブジェクト。User型のプロパティのうち、string、number、boolean型の値を持つプロパティだけがフィルタ条件として有効です。filterの各プロパティに指定された値と一致するユーザーだけを含む配列を返します。
+
+type User4 = {
+  id: number;
+  name: string;
+  email: string;
+  isVerified: boolean;
+};
+
+type Filter = {
+  [K in keyof User4]?: User4[K] extends string | number | boolean ? User4[K] : never;
+};
+
+const users4: User4[] = [
+  { id: 1, name: 'Alice', email: 'alice@example.com', isVerified: true },
+  { id: 2, name: 'Bob', email: 'bob@example.com', isVerified: false },
+  { id: 3, name: 'Charlie', email: 'charlie@example.com', isVerified: true },
+];
+
+// type FilterUsers =　<T extends {isVerified:boolean},U>(arr:T[],boolean:U) => Filter[]
+// const filterUsers:FilterUsers = (arr,boolean) => {
+//   return arr.filter(val => val.isVerified == boolean);
+// }
+// console.log(filterUsers<User4,boolean>(users4,true))
+
+type FilterUsers<T, U> = (arr: T[], boolean: U) => T[];
+const filterUsers:FilterUsers<User4,boolean> = (arr,boolean) => {
+  return arr.filter(val => val.isVerified == boolean);
+}
+// console.log(filterUsers(users4,true))
+
+
+// User型を要素とする配列を受け取り、nameプロパティが一致する要素を配列から検索する関数searchUserByNameを実装してください。ただし、nameプロパティは大文字小文字を区別しない検索とします。また、検索結果が複数存在する場合は、配列で返却します。
+
+type User5 = {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+  isVerified: boolean;
+};
+
+
+const users5: User5[] = [
+  { id: 1, name: "Alice", age: 20, email: "alice@example.com", isVerified: true },
+  { id: 2, name: "Bob", age: 30, email: "bob@example.com", isVerified: false },
+  { id: 3, name: "Charlie", age: 40, email: "charlie@example.com", isVerified: true },
+  { id: 4, name: "alice", age: 25, email: "alice2@example.com", isVerified: false },
+];
+
+type SearchUserByName<T> = (array:T[],name:string) => T[] | T ;
+
+const searchUserByName:SearchUserByName<User5> = (array,name) => {
+    return array.filter(val => val.name.toLocaleLowerCase() == name.toLocaleLowerCase())
+}
+
+// console.log(searchUserByName(users5, "Alice"));
+// console.log(searchUserByName(users5, "bob"));
+// console.log(searchUserByName(users5, "Charlie"));
+// console.log(searchUserByName(users5, "Dave"));
+
+
+
+// Product インターフェースを使用して、以下のような型を定義してください。
+
+// DiscountedProduct 割引が適用された商品を表す型であり、Product 型に割引価格と割引率を追加したものとします。DiscountedProduct 型には、name、price、discountedPrice、discountRate のプロパティを持たせます。
+// Discount 割引情報を表す型であり、割引率をパーセント単位で表現するものとします。Discount 型には、discountRate プロパティを持たせます。
+// ただし、DiscountedProduct 型と Discount 型の両方で、割引率を表現する discountRate プロパティは必ずしも存在しなくてもよく、その場合は undefined が入るものとします。
+
+interface Product {
+  name: string;
+  price: number;
+}
+
+interface DiscountedProduct extends Product {
+  discountedPrice: number;
+  discountRate?: number;
+}
+
+interface Discount {
+  discountRate?: number;
+}
+
+
+
+
+
 
 
 
