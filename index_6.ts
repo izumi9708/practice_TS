@@ -74,3 +74,88 @@ const groupBy = (array:User8[],key:string):{[key:string]:User8} => {
 
 type MergeObjects<T extends object, U extends object> = T & Omit<U,keyof T> & Omit<T,keyof U>;
 
+
+
+// 次のような型を実装してください。
+// この型は、配列の最初の要素の型を返します。例えば、Head<[string, number, boolean]>はstring型を返します。ただし、配列が空の場合にはundefined型を返します。
+
+type Head<T extends any[]> = T[0]|undefined;
+
+
+// 次のような型を実装してください。
+// この型は、多次元の配列をフラットにする型です。例えば、[1, [2, [3, 4], 5], 6]という配列を渡すと、[1, 2, 3, 4, 5, 6]という配列を返します。ただし、ネストの深さに上限はありません。また、Tには配列だけでなく、配列の要素として別の配列が入る場合もあるとします。
+
+type Flatten<T> = T extends (infer U)[] ? Flatten<U> : T;
+
+
+// 以下の配列から最初の要素を取得する型エイリアス Head2 を infer を用いて実装してください。
+
+type T = ['apple', 'banana', 'orange'];
+
+type Head2<T extends any[]> = T extends [infer H , ...any[]] ? H : never;
+
+type A = Head2<T>;
+
+
+// 次の配列型 Tuple の最後の要素の型を取得する型 Last<T> を、infer キーワードを使用して実装してください
+
+type Tuple = [number, string, boolean];
+type Last<T> = T extends [...unknown[], infer U] ? U : unknown;
+ 
+type Example = Last<Tuple>; // boolean
+
+
+// ジェネリック型パラメーターTがオブジェクト型である場合、そのプロパティの値の型を配列として抽出する型エイリアスValues<T>を定義してください。ただし、Tのキーは文字列とするものとします。
+
+type Values<T> = T extends {} ? T[keyof T] : never;
+
+
+// 以下の配列型から、string型である要素のみを抽出する型StringArrayを定義してください。
+
+type Array1 = [string, number, boolean, "hello", 42, "world"];
+
+type StringArray<T extends any[]> = {
+  [K in keyof T]:T[K] extends string ? T[K] : never;
+}
+
+
+
+// 型を利用して、以下の要件を満たす型 PersonWithPartialAddress を定義してください。
+
+// Person と同じフィールドを持ちます。
+// address フィールドの値は、 prefecture プロパティと city プロパティのいずれか、または両方が null または undefined になることができます。ただし、 address プロパティ自体は削除することはできません。
+
+
+type Person11 = {
+  name: string;
+  age: number;
+  address: {
+    prefecture: string;
+    city: string;
+  };
+};
+
+type PersonWithPartialAddress = {
+  name: string;
+  age: number;
+  address?: {
+    prefecture?: string;
+    city?: string;
+  };
+}
+
+
+// PersonWithPartialAddress型を定義し、Person型からaddressプロパティの存在を除外して、他のプロパティはそのまま残すようにしてください。
+type Person12 = {
+  name: string;
+  age: number;
+  address?: {
+    prefecture: string;
+    city: string;
+  };
+};
+
+type PersonWithPartialAddress2 = Omit<Person12,'address'>
+
+
+
