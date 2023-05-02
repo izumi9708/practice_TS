@@ -158,4 +158,172 @@ type Person12 = {
 type PersonWithPartialAddress2 = Omit<Person12,'address'>
 
 
+// 2つのインターフェースをマージし、新しいインターフェース ExtendedUser を作成してください。
+
+// ExtendedUser の型を使用して、以下の変数 user に適切な値を与えてください。
+
+interface User11 {
+  name: string;
+  age: number;
+}
+
+interface User12 {
+  email: string;
+}
+
+type User13 = User11 & User12;
+
+type ExtendedUser = {
+  name: string;
+  age: number;
+  email: string;
+}
+
+const user13: ExtendedUser = {
+  name:'ichiro',
+  age:25,
+  email:'aaa'
+} ;
+
+
+// 以下の要件を満たす型を定義してください。
+
+// 数値の配列を受け取り、各要素を2倍にした配列を返す関数 doubleNumbers を定義する。
+// doubleNumbers の引数には数値の配列を与える必要があり、それ以外の引数を与えるとエラーとなる。
+
+type DoubleNumbers<T extends number> = (array:T[]) => T[]
+
+
+
+// 関数 isUnique を実装してください。
+
+// isUnique は、文字列を受け取り、その文字列内に重複する文字がない場合に true を、重複する文字がある場合に false を返します。
+// ただし、大文字と小文字は区別しません。つまり、同じ文字の大文字小文字の組み合わせは重複とみなされません。
+// 空文字列が渡された場合には true を返します。
+
+// isUnique 関数は、型パラメータ T を持ちます。
+// T は string 型を extend します。
+
+type IsUnique<T extends string> = (str:T) => boolean 
+
+const isUnique:IsUnique<string> = (str) => {
+  const array = str.split('');
+  const result = array.filter((val,index,array) => array.indexOf(val) !== index)
+  
+  return result.length > 0 ? true : false;
+}
+
+// console.log(isUnique('abcdefg'))
+
+
+// SwapKeyAndValue を定義してください。この型エイリアスは、オブジェクトの型を引数として受け取り、そのオブジェクトのキーと値を入れ替えたオブジェクトの型を返すものとします。
+
+type SwapKeyAndValue<T extends { [key: string]: string }> = {
+  [K in keyof T]: {
+    [P in keyof T]: T[K] extends T[P] ? P : never;
+  }[keyof T];
+};
+
+type Input = {
+  a: "apple",
+  b: "banana",
+  c: "cherry"
+}
+
+type Result = SwapKeyAndValue<Input>;
+
+
+// 型の各キーに対応する値の型を、各キーをキーとするオブジェクトとして表現する型 Values を定義してください。
+
+type KeyValuePair = {
+  key1: string,
+  key2: number,
+  key3: boolean,
+}
+
+type Values<T> = {
+  [K in keyof T]: T[K]
+}
+
+type Result2 = Values<KeyValuePair>
+
+
+
+// 以下の型エイリアス SwapFirstAndSecond を実装してください。この型エイリアスは、2つの引数の型を受け取り、それらを順番を入れ替えた新しい型を返すものとします。
+
+type SwapFirstAndSecond<A, B> = [B,A]
+
+type Result3 = SwapFirstAndSecond<number, string>
+
+
+// 以下のような関数を型で表現してください。
+
+function filterNullish<T>(array: T[]): NonNullable<T>[] {
+  return array.filter(Boolean) as NonNullable<T>[];
+}
+
+type FilterNullish<T> = T extends (null | undefined) ? unknown : T;
+
+
+// 2つのオブジェクトのプロパティをマージする型エイリアス Merge を定義してください。ただし、同じプロパティがあった場合は第2引数のもので上書きされます。
+
+type A = { a: string, b: number }
+type B = { b: string, c: boolean }
+
+type Merge<T,U> = Omit<T,keyof U>&U
+
+type Result4 = Merge<A, B> 
+
+
+// この型から email プロパティを省いた型を定義してください。
+
+type User14 = {
+  id: number;
+  name: string;
+  age: number;
+  email?: string;
+};
+
+type Result5 = Omit<User14,'email'>
+
+
+// 関数 filterBy を、ジェネリクスを使って定義してください。
+
+// 関数 filterBy は、2つの引数を取ります。
+// 第1引数は、オブジェクトの配列です。
+// 第2引数は、オブジェクトの1つのプロパティに対するフィルター条件です。
+// 関数 filterBy は、第1引数で渡された配列から、第2引数で指定されたフィルター条件を満たすオブジェクトだけを抽出して、そのオブジェクトの配列を返します。
+
+const persons = [
+  { id: 1, name: 'Alice', age: 20 },
+  { id: 2, name: 'Bob', age: 30 },
+  { id: 3, name: 'Charlie', age: 25 },
+  { id: 4, name: 'David', age: 30 },
+];
+
+type FilterBy<T> = (obj:T[],str:string) => T[]; 
+
+
+
+// 与えられた配列から、ランダムな要素を取得する関数 getRandomItem を持ちます。
+// getRandomItem 関数は、引数として配列を受け取り、戻り値としてその配列のランダムな要素を返します。
+// 型定義では、getRandomItem 関数の引数と戻り値の型をジェネリクスを用いて定義してください。
+
+type GetRandomItem<T> = (arr:T[]) => T[];
+
+
+// 型引数 T を受け取り、T のプロパティ name のみを持つオブジェクト型を定義する。
+// ただし、name の型は string 型であることを保証する。
+// その他のプロパティは含まないものとする。
+
+type NameObj<T extends {name:string}> = Pick<T,'name'> 
+
+interface Person {
+  name: string;
+  age: number;
+  address: string;
+}
+
+type Result6 = NameObj<Person>; 
+
 
