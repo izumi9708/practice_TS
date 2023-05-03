@@ -327,3 +327,15 @@ interface Person {
 type Result6 = NameObj<Person>; 
 
 
+// 次のような型を持つPersonインターフェースがあります。Personインターフェースを拡張して、Studentインターフェースを定義してください。Studentインターフェースは、Personインターフェースを継承します。また、universityプロパティを追加してください。universityプロパティは、大学名の文字列を持ちます。
+
+interface Person {
+  name: string;
+  age: number;
+  gender: 'male' | 'female' | 'other';
+}
+
+interface Student_2 extends Person {
+  university:string
+}
+
