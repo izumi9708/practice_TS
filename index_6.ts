@@ -339,3 +339,55 @@ interface Student_2 extends Person {
   university:string
 }
 
+// 以下の条件を満たす、ジェネリクスを使用した型エイリアスを定義してください。
+
+// 第1引数には、keyとvalueのペアを持つオブジェクト型を指定します。
+// 第2引数には、keyの値を指定します。
+// 型エイリアスの戻り値は、第2引数で指定されたkeyに対応するvalueの型として定義されます。
+
+interface MyObj {
+  foo: number;
+  bar: string;
+  baz: boolean;
+}
+
+type GetValueType<T,U extends keyof T> = T[U];
+
+type FooType = GetValueType<MyObj, 'foo'>; // FooTypeはnumber型
+
+
+
+// Merge<T, U> は、2つのオブジェクト T と U のプロパティをマージし、新しいオブジェクトを返します。
+// T と U はどちらもオブジェクトであり、共通のプロパティを持ちます。
+// 共通のプロパティの値は、T のプロパティの値が優先されます。
+// 例えば、Merge<{a: string, b: number}, {b: string, c: boolean}> の結果は {a: string, b: number, c: boolean} となります。
+
+type Merge<T,U> = Omit<T, keyof U> & U 
+
+type Result11 = Merge<{a: string, b: number}, {b: string, c: boolean}>
+
+
+// T はオブジェクト型
+// 以下の条件を満たす型とします。
+
+// FilterFlags<T> は T 型のうち、値が真偽値のプロパティを持つ型となる。
+// FilterFlags<T> はオプショナルなプロパティを持ち、値の型は真偽値型となる。
+// FilterFlags<T> は T 型のプロパティのうち、値が真偽値型であるものだけを持つ型となる。
+
+type Example = {
+  id: number;
+  name: string;
+  visible: boolean;
+  flag1?: boolean;
+  flag2?: string;
+}
+
+type FilterBoolean<T> = {
+  [K in keyof T]: T[K]
+}[keyof T]
+
+type AAA = FilterBoolean<Example>
+
+type Result12 = Pick<Example,FilterBoolean<Example>>
+
+
