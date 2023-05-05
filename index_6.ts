@@ -391,3 +391,61 @@ type AAA = FilterBoolean<Example>
 type Result12 = Pick<Example,FilterBoolean<Example>>
 
 
+
+
+// 以下の条件を満たす、型パラメーターTとUを持つ型を定義してください。
+
+// TとUは、それぞれオブジェクトの型を表します。
+// TとUは、同じプロパティ名を持ち、そのプロパティの型は同じです。
+// この型は、TとUのどちらかのプロパティ値を持ちます。
+
+interface Obj1 {
+  a: string;
+  b: number;
+  c: boolean;
+}
+
+interface Obj2 {
+  a: string;
+  b: string;
+  c: boolean;
+}
+
+type MyType<T,U> = Omit<T,keyof U> & U;
+
+type Result13 = MyType<Obj1, Obj2>;
+// -> { b: number | string, c: boolean }
+
+
+// 以下の要件を満たす、関数を実装してください。
+
+// この関数は、number型の引数を1つ取ります。
+// この関数は、引数が偶数なら true を、奇数なら false を返します。
+// ただし、if 文などの条件分岐は利用せず、三項演算子のみを使用してください。また、Math ライブラリなどの外部ライブラリを使用しないで実装してください。
+
+type JudgeEven = <T extends number>(num:T) => boolean
+
+const judgeEven:JudgeEven = (num) => {
+  return num % 2 === 0 ? true : false
+}
+
+// console.log(judgeEven<number>(4))
+
+
+// 以下の条件を満たす、type MyExclude<T,U>を実装してください。
+
+// T型からU型に割り当て可能な型を除外した型を返す
+// 具体的には、T型のうちU型に代入可能なプロパティを除外して新しい型を生成します。
+
+type Obj3 = { a: string, b: number };
+type Obj4 = { a: string };
+
+type MyExclude<T,U> = Omit<T,keyof U>
+type Result14 = MyExclude<Obj3,Obj4>
+
+
+
+
+
+
+
