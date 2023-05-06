@@ -446,6 +446,99 @@ type Result14 = MyExclude<Obj3,Obj4>
 
 
 
+// T型の全てのプロパティをオプションにした型を返すtype MyPartial<T>を実装してください。
+
+interface User {
+  id: number;
+  name: string;
+  age: number;
+}
+
+type MyPartial<T> = Partial<T>
+ 
+type PartialUser = MyPartial<User>;
+
+
+// 以下の条件を満たす、型パラメーターTとUを持つ型を定義してください。
+
+// TとUは、それぞれオブジェクトの型を表します。
+// TとUは、同じプロパティ名を持ち、そのプロパティの型は同じです。
+// この型は、TとUの両方のプロパティ値を持ちます。
+
+type Obj4 = {
+  a: string;
+  b: number
+}
+
+type Obj5 = {
+   a: string; 
+   b: number; 
+   c: boolean 
+}
+
+type OmitResult2<T,U> = Omit<T,keyof U> & U
+
+type Result14 = OmitResult2<Obj4,Obj5>
+
+
+// 以下の条件を満たす、type MyRequired<T>を実装してください。
+
+// T型のすべてのプロパティを必須にした新しい型を返す。
+
+interface User2 {
+  id?: number;
+  name?: string;
+  age?: number;
+}
+
+type MyRequired<T> = Required<T>
+type Result15 = MyRequired<User2>
+
+
+// 以下の条件を満たす、type MyPick<T,K>を実装してください。
+
+// T型からK型に含まれるプロパティのみを持つ型を返す
+
+// 具体的には、T型からK型に含まれるプロパティのみを抽出して新しい型を生成します。
+
+type Obj6 = {
+  id: number;
+  name: string;
+  age: number;
+}
+
+type Obj7 = {
+  id: number;
+  age: number;
+}
+
+type GetKeys<T> = {
+  [K in keyof T]: K
+}[keyof T]
+
+type MyPick<T,K extends GetKeys<T>> = Pick<T,K> 
+
+type Result16 = MyPick<Obj6,GetKeys<Obj7>>
+
+
+// 以下の条件を満たす、type MyReturnType<T>を実装してください。
+
+// ジェネリック型Tの戻り値の型を返す
+
+// 具体的には、ジェネリック型Tの戻り値の型を抽出して新しい型を生成します。
+
+
+
+function add(a: number, b: number) {
+  return a + b;
+}
+
+type MyReturnType<T> = T extends (...arg:any[]) => infer R ? R : never;
+
+type ResultType = MyReturnType<typeof add>; // ResultTypeはnumber型になる
+
+
+
 
 
 
