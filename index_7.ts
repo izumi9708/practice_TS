@@ -254,4 +254,66 @@ const reverseObject = (obj:Obj) => {
 
 // console.log(reverseObject(obj))
 
+  
+  
+  // 2つの型を組み合わせて、 User 型を定義してください
+// User 型には id 以外のプロパティはすべてオプションとします
+
+type UserBase = {
+  id: number;
+  name: string;
+  age: number;
+};
+
+type UserOptionals = {
+  gender?: "male" | "female";
+  occupation?: string;
+};
+
+type MyPartial<T> = Partial<Omit<T, 'id'>> & { id: number };
+type User =  MyPartial<UserBase> & UserOptionals;
+
+
+// 配列を、指定された型の配列に変換する型ToArrayを実装してください。
+// ToArray<T>は、ジェネリック型Tを受け取る
+// ToArray<T>は、T[]型の値を受け取って、その型を配列に変換する型
+
+type ToArray<T> = T[] extends Array<infer U> ? U[] : unknown;
+
+type NumberArray = ToArray<number>; // 期待される値: number[]
+type WordArray = ToArray<string>; // 期待される値: string[]
+
+
+
+// Person インターフェースから name プロパティのみを抽出して新しい型 PersonName を定義してください。
+
+interface Person {
+  name: string;
+  age: number;
+  email: string;
+}
+
+type PersonName<T,K extends keyof T> = Pick<T,K>;
+type Result = PersonName<Person,'name'>
+
+
+// Person 型に、email プロパティをオプショナルにする型 PersonEmail を定義してください。
+
+interface Person {
+  name: string;
+  age: number;
+  email: string;
+}
+
+type PersonEmail = Omit<Person,'email'> & {email?:string};
+
+
+// 配列の要素を、指定した数だけ取り出して返す関数 take の型を定義してください。
+type Take<T> = (array:T[],num:number) => T[]
+
+
+
+
+
+
 
