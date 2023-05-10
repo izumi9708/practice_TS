@@ -313,6 +313,228 @@ type Take<T> = (array:T[],num:number) => T[]
 
 
 
+// 型が一致している場合はtrue、そうでない場合はfalseを返す型Equalを定義してください。
+
+type User1 = {
+  name: string;
+  age: number;
+  email: string;
+};
+
+type UserProfile = {
+  username: string;
+  bio: string;
+  website: string;
+};
+
+type Equal<T,U> = T extends U ?　(U extends T ? true : false) : false
+type Result1 = Equal<User1,UserProfile> 
+
+
+
+// 2つの型の間に、共通のプロパティ名と型を持つプロパティが存在する場合、そのプロパティを削除した型を返すDiff型を実装してください。
+
+type OriginalType = {
+  foo: number;
+  bar: string;
+  baz: boolean;
+}
+
+type ModifiedType = {
+  bar: string;
+}
+
+type Keys<T,U> = Exclude<keyof T , keyof U>
+type Diff<T,U> = Pick<T & U , Keys<T,U>>
+type Result2 = Diff<OriginalType, ModifiedType>;
+
+
+
+// User型とUserData型のプロパティがすべて含まれるMergedUser型を作成します。
+
+type User2 = {
+  name: string;
+  age: number;
+}
+
+type UserData = {
+  email: string;
+  phone: string;
+}
+
+
+type MergedUser = User2 & UserData
+
+
+
+// 以下の3つの型を組み合わせたものとする:
+// Article: { id: number; title: string; body: string }
+// User: { id: number; name: string }
+// Author: { userId: number; articles: Article[] }
+// UserとAuthorは、idプロパティで紐づく。
+// Author型のarticlesプロパティには、Article型の配列が格納される。
+// Author型のuserIdプロパティは、User型のidプロパティと同じ値である。
+// Article型のidプロパティは、ユニークな数値である。
+
+type Result3 = {
+  Article: { id?: number; title: string; body: string }
+  User: { id: number; name: string }
+  Author: { userId: number; articles: Array<{id:number,title:string,body:string}> }
+}
+
+
+// オブジェクトから、id と name のプロパティだけを持つ型 UserBasicInfo を定義してください。
+
+const user = {
+  id: 123,
+  name: 'John Doe',
+  email: 'johndoe@example.com',
+  age: 30
+};
+
+type Test = Pick<typeof user,'id'|'name'>;
+
+
+// 2つの型を合成し、新しい型を作成してください。
+// 新しい型で id は必須項目、name と age は任意項目とします
+
+type Person = {
+  id: string;
+  name: string;
+  age: number;
+};
+
+type PartialPerson = Omit<Partial<Person>,'id'> & {id:string} ;
+
+
+// typeBが全てnumber型になるように定義してください
+
+type A = {
+  [P in keyof B]: B[P] extends number ? B[P] : number;
+}
+
+type B = {
+  id: string;
+  name: string;
+  age: boolean;
+}
+
+
+// すべてのプロパティを省略可能にする MakePartial 型を定義してください。
+
+type User = {
+  id: number;
+  name: string;
+  age: number;
+};
+
+type MakePartial<T> = Partial<T>
+
+type PartialUser = MakePartial<User>;
+
+
+// このオブジェクトの baz の値を取り出すための TypeScript の型を宣言してください。
+
+const obj = {
+  foo: {
+    bar: {
+      baz: 42
+    }
+  }
+};
+
+type Obj = typeof obj;
+type GetBaz = Obj['foo'];
+
+type Result4 = GetBaz['bar']
+
+
+// この User 型を引数にとる、以下のようなジェネリック型 UserId<T> を定義してください。
+
+// T 型が User 型である場合、UserId<T> 型は number 型になる。
+// それ以外の型である場合、UserId<T> 型は unknown 型になる。
+
+
+type User3 = {
+  id: number;
+  name: string;
+  age: number;
+};
+
+type UserId<T> = T extends {id:infer U} ? U : unknown
+
+type Id1 = UserId<User>; // Id1 の型は number になる
+type Id2 = UserId<string>; // Id2 の型は unknown になる
+
+
+
+// User型のプロパティの型を全てstring型に変換する型StringifyUserを定義してください。ただし、User型に追加のプロパティが定義された場合でも、そのプロパティの型を自動的に変換できるように定義してください。
+
+type User4 = {
+  id: number;
+  name: string;
+  age: number;
+};
+
+type AdditionalUser = {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+};
+
+type StringifyUser<T> = {
+  [K in keyof T]: T[K] extends string | number | boolean ? string : T[K];
+}
+
+type StringifiedUser1 = StringifyUser<User4>;
+type StringifiedUser2 = StringifyUser<User4> & { email: string };
+type StringifiedUser3 = StringifyUser<User4> & AdditionalUser;
+
+
+
+
+
+// 配列の最初の要素を取得する型Firstを定義せよ。
+
+type arr1 = ['a', 'b', 'c'];
+type arr2 = [3, 2, 1];
+
+type First<T> = T extends [infer U, ...any[]] ? U : never
+
+type head1 = First<arr1>; // 期待される型: 'a'
+type head2 = First<arr2>; // 期待される型: 3
+
+
+// タプルの最後の要素を取得する型Lastを定義せよ。
+type tuple1 = ['a', 'b', 'c'];
+type tuple2 = [3, 2, 1];
+
+type Last<T> = T extends [...any[],infer U] ? U : never;
+
+type tail1 = Last<tuple1>; // 期待される型: 'c'
+type tail2 = Last<tuple2>; // 期待される型: 1
+
+
+
+type MyType<T> = T extends Array<infer U> ? U : never;
+
+type MyArray = Array<string>;
+type MyResult = MyType<MyArray>; // string
+
+
+// オブジェクトのプロパティの型を変換する型MapObjectを定義せよ。
+
+type obj1 = { foo: number, bar: string };
+type obj2 = { 0: number, 1: string, 2: boolean };
+
+type MapObject<T, U> = {
+  [K in keyof T]:T[K] extends U ? U : U;
+}
+
+type mappedObj1 = MapObject<obj1, string>; // 期待される型: { foo: string, bar: string }
+type mappedObj2 = MapObject<obj2, boolean>; // 期待される型: { 0: boolean, 1: boolean, 2: boolean }
+
 
 
 
