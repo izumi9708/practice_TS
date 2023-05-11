@@ -682,4 +682,6 @@ type User = {
 type UserId = Pick<User,'id'>;
 type UserWithoutId = Omit<User,'id'>
 
+// 5/11
+
 
