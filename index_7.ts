@@ -1,14 +1,14 @@
 // 次のコードにおいて、T型の全てのプロパティをオプショナル（optional）にする型マップ型MyPartial<T>を実装してください。
 
-interface User {
+interface User1 {
   id: number;
   name: string;
   age: number;
 }
 
-type MyPartial<T> = Partial<T>
+type MyPartial1<T> = Partial<T>
 
-type PartialUser = MyPartial<User>;
+type PartialUser1 = MyPartial1<User1>;
 
 
 // 以下の2つの型を合成して、新しい型を作成し、指定された値を持つオブジェクトを作成してください。
@@ -534,6 +534,128 @@ type MapObject<T, U> = {
 
 type mappedObj1 = MapObject<obj1, string>; // 期待される型: { foo: string, bar: string }
 type mappedObj2 = MapObject<obj2, boolean>; // 期待される型: { 0: boolean, 1: boolean, 2: boolean }
+
+
+
+// User 型は id, name, age の３つのプロパティを持つ。
+// Address 型は prefecture, city, town の３つのプロパティを持つ。
+// UserWithAddress 型は User 型と Address 型を持つ。
+// UsersWithAddress 型は UserWithAddress の配列。
+
+// getNamesOfUsersWithAddress という名前の関数を作成する。
+// 引数は UsersWithAddress 型の配列。
+// 返り値は string の配列で、 UserWithAddress の name プロパティの値を含む。
+
+// このとき、getNamesOfUsersWithAddress(users) は ["Alice", "Bob"] を返す必要があります。
+
+type User = {
+  id:number,
+  name:string,
+  age:number
+}
+
+type Address = {
+  prefecture:string,
+  city:string,
+  town:string
+}
+
+type UserWithAddress = User & Address;
+type UsersWithAddress = {
+  user:User,
+  address:Address
+}
+
+const users: UsersWithAddress[] = [
+  {
+    user: { id: 1, name: "Alice", age: 20 },
+    address: { prefecture: "Tokyo", city: "Chuo", town: "Ginza" },
+  },
+  {
+    user: { id: 2, name: "Bob", age: 25 },
+    address: { prefecture: "Osaka", city: "Chuo", town: "Umeda" },
+  },
+];
+
+type GetNamesOfUsersWithAddress<T> = (array:T[]) => string[];
+
+const getNamesOfUsersWithAddress:GetNamesOfUsersWithAddress<UsersWithAddress> = (array) => {
+  return array.map(val => val.user.name)
+}
+
+// console.log(getNamesOfUsersWithAddress(users))
+
+
+
+// インターフェース Person を継承した Employee インターフェースを定義し、Employee インターフェースを使って、以下のオブジェクトの型を定義してください。
+
+interface Person {
+  name: string;
+  age: number;
+}
+
+interface Employee extends Person {
+  companyId:string
+}
+
+const employee:Employee  = {
+  name: "John",
+  age: 30,
+  companyId: "ABC123"
+};
+
+
+// 次のような型を定義してください。
+// PartialUser: User 型のすべてのプロパティをオプションとした型。
+
+interface User2 {
+  id: number;
+  name: string;
+  email: string;
+}
+
+type PartialUser = Partial<User2>
+
+
+
+const users2 = [
+  { id: 1, name: "Alice" },
+  { id: 2, name: "Bob" },
+  { id: 3, name: "Charlie" },
+];
+
+interface User3 {
+  id:number;
+  name:string;
+}
+
+function findById(id: number) {
+  return users2.find((user:{id:number;name:string}) => user.id === id);
+}
+
+// const user = findById(1);
+// console.log(user)
+// if (user !== undefined) {
+//   // user は { id: number, name: string } の形式であることが保証されている
+//   console.log(user.name);
+// }
+
+
+
+const users3 = [
+  { id: 1, name: 'Alice', age: 20 },
+  { id: 2, name: 'Bob', age: 25 },
+  { id: 3, name: 'Charlie', age: 30 },
+];
+
+type Ages = (array:{id:number;name:string;age:number}[]) => number[]
+
+const ages:Ages = (array) => {
+  return array.map(val => val.age);
+}
+
+console.log(ages(users3))
+
 
 
 
