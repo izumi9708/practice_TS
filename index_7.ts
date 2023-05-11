@@ -658,6 +658,28 @@ console.log(ages(users3))
 
 
 
+// User 型を定義してください。
 
+// User 型は、以下のプロパティを持ちます。
+// id: number型
+// name: string型
+// age: number型
+// gender: "male" | "female" | "other"型
+// isAdmin: boolean型
+// また、以下の型エイリアスを定義してください。
+
+// UserId: User 型の id プロパティと同じ型
+// UserWithoutId: User 型の id プロパティを除いた型
+
+type User = {
+  id:number;
+  name:string;
+  age:number;
+  gender:"male" | "female" | "other";
+  isAdmin: boolean
+}
+
+type UserId = Pick<User,'id'>;
+type UserWithoutId = Omit<User,'id'>
 
 
