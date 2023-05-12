@@ -682,6 +682,91 @@ type User = {
 type UserId = Pick<User,'id'>;
 type UserWithoutId = Omit<User,'id'>
 
-// 5/11
+
+// この関数の型を定義してください。
+
+function sumOfSquare(numbers: number[]): number {
+  return numbers.reduce((acc, val) => acc + val ** 2, 0);
+}
+
+type SumOfSquare = (numbers:number[]) => number;
+
+
+type Product = {
+  id:number;
+  name:string;
+  price:number;
+  isAvailable:boolean;
+  description?:string;
+}
+
+type ProductData = {
+  name:string;
+  price:number;
+  isAvailable:boolean;
+  description?:string
+}
+
+type ProductTransformer = Omit<Product,'name'|'description'>
+
+const data: ProductData = { name: 'Apple', price: 100, isAvailable: true }
+// const transformer: ProductTransformer = { id: 1 }
+const product: Product = { id: 1, name: 'Apple', price: 100, isAvailable: true }
+
+// 変換ができることを確認
+// const transformed = { ...transformer, ...data }
+// const result: Product = { ...product, ...transformed }
+
+
+// User 型の全てのプロパティがオプションである型を定義してください。
+// User 型の全てのプロパティが必須である型を定義してください。
+// User 型の一部のプロパティを必須にし、他のプロパティをオプションにした型を定義してください。必須にするプロパティは id と name で、他のプロパティはオプションにしてください。
+
+type User = {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+  isActive: boolean;
+};
+
+type UserOption = Partial<User>;
+type UserRequired = Required<User>;
+type UserAr = Partial<Omit<User,'id'|'name'>> & Pick<User,'id'|'name'>;
+
+
+// この関数に適切な型を付けてください。
+
+// nはnumber型で、繰り返しの回数を表します。
+// valueはT型で、繰り返しの際に返される値を表します。
+// 関数は、valueをn回繰り返し、配列として返します。
+
+function repeat<T>(n: number, value: T): T[] {
+  return Array(n).fill(value);
+}
+
+type Repeat<T> = (n:number,value:T) => T[];
+
+
+
+// 次の配列の中から偶数の要素だけを抽出して、新しい配列を作成する関数 getEvenNumbers を TypeScript で実装してください。ただし、引数として渡される配列には、すべての要素が数値型であることが保証されています。
+
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8];
+
+const getEvenNumbers = (array:number[]):number[] => {
+  let newArray = [];
+  array.forEach(val => val % 2 === 0 ? newArray.push(val) : false);
+
+  return newArray
+}
+
+const evenNumbers = getEvenNumbers(numbers);
+// console.log(evenNumbers); // [2, 4, 6, 8]
+
+
+
+
+
+
 
 
