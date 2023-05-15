@@ -682,6 +682,114 @@ type User = {
 type UserId = Pick<User,'id'>;
 type UserWithoutId = Omit<User,'id'>
 
-// 5/11
+// 追加
 
+
+// 配列から特定の要素を削除する関数を実装してください。以下の仕様を満たすようにしてください。
+
+// 関数名はremoveElementとします。
+// 引数は以下の通りです。
+// array: T[]：削除操作を行う配列（Tはジェネリック型とします）。
+// element: T：削除する要素。
+// 配列の先頭から順に要素を比較し、最初に見つかった一致する要素を削除します。
+// 削除した要素があった場合は、削除した要素を含まない新しい配列を返します。
+// 削除した要素がなかった場合は、元の配列をそのまま返します。
+
+// arrayが空の場合は、空の配列を返します。
+// elementがundefinedまたはnullの場合は、何も処理を行わずにarrayをそのまま返します。
+// arrayは破壊的変更を行わないように実装してください（元の配列の要素が変更されないようにする）。
+
+type RemoveElement = <T>(array:T[],element:T) => T[];
+
+const removeElement:RemoveElement = (array,element) => {
+  return array.filter(val => val !== element)
+}  
+
+const array1 = [1, 2, 3, 4, 5];
+const result1 = removeElement(array1, 3);
+// console.log(result1);
+
+const array2 = [1, 2, 3, 4, 5];
+const result2 = removeElement(array2, 6);
+// console.log(result2);
+const array3: string[] = [];
+const result3 = removeElement(array3, 'a');
+// console.log(result3);
+
+const array4 = [1, 2, 3, 4, 5];
+const result4 = removeElement(array4, undefined);
+// console.log(result4);
+
+const array5 = [1, 2, 3, 4, 5];
+const result5 = removeElement(array5, null);
+// console.log(result5);
+
+
+// 以下の要件を満たす isNumber という名前の型を宣言してください。
+
+// isNumber は、引数として与えられた値が数値かどうかを判定し、結果を真偽値で返す関数型となる。
+// 判定する値の型は数値型 number と文字列型 string のどちらでも受け付けられる。
+// 判定が真の場合は true、偽の場合は false を返す
+
+type IsNumber = (param:number|string) => boolean;
+
+const isNumber:IsNumber = (param) => {
+  return typeof param == 'number' 
+}
+
+// console.log(isNumber(555))
+
+
+
+// 配列の要素をランダムに並び替える関数 shuffleArray を実装してください。次の仕様に従うものとします。
+
+// 関数名: shuffleArray
+// 引数: 配列 (any[])
+// 返り値: ランダムに並び替えた配列 (any[])
+// 元の配列は変更しない (非破壊的関数)
+
+type ShuffleArray = (array:any[]) => any[];
+const shuffleArray:ShuffleArray = (array) => {
+  let randomArray = [];
+  let resultArray = [];
+  
+  while(randomArray.length < array.length ){
+    const randomValue = Math.floor(Math.random() * array.length ); 
+    randomArray.push(randomValue);
+
+    randomArray = Array.from(new Set(randomArray))
+  }
+
+  for(let i of randomArray){
+    resultArray.push(array[i]);
+  }
+
+  return resultArray;
+  
+}
+// console.log(shuffleArray([1,22,54,111]));
+
+
+
+// JavaScriptで、2つのオブジェクトを結合する方法を実装してください。ただし、同じキーが存在する場合は、後のオブジェクトの値で上書きしてください。また、元のオブジェクトは変更しないように実装してください。
+const obj1 = {
+  name:'aa',
+  age:20,
+}
+
+const obj2 = {
+  name:'bb',
+  trans:'fire'
+}
+
+const newObj = {...obj1,...obj2}
+
+
+// 以下のような条件を満たす、型エイリアスを作成してください。
+
+// ジェネリクスを使い、任意の型の配列を受け取ることができる
+// 引数として受け取った配列の要素を逆順に並べた新しい配列を返す
+// 返り値の配列の型は引数の配列の型と同じになる
+
+type ReverseFilter = <T>(array:T[]) => T[]
 
