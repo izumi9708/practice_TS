@@ -682,8 +682,6 @@ type User = {
 type UserId = Pick<User,'id'>;
 type UserWithoutId = Omit<User,'id'>
 
-// 追加
-
 
 // 配列から特定の要素を削除する関数を実装してください。以下の仕様を満たすようにしてください。
 
