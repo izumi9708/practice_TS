@@ -169,4 +169,4 @@ const products_2: Product[] = [
   { id: 4, name: 'Milk', price: 200, category: 'Dairy' },
 ];
 
-console.log(filteredProducts2(products_2,'category','Fruit'));
+// console.log(filteredProducts2(products_2,'category','Fruit'));
