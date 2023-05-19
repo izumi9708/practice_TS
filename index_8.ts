@@ -131,14 +131,14 @@ const filteredProducts = filterByProperty(products, 'category', 'Fruit');
 
 // 引数としてオブジェクトとプロパティ名を受け取り、指定されたプロパティがオブジェクトに存在する場合はそのプロパティの型、存在しない場合は undefined の型を返す型エイリアス
 
-type Obj = {
+type Obj2 = {
   name:string;
   age:number;
 }
 
 type ObjProperty<T,K> = K extends keyof T ? T[K] : undefined;
 
-type Result = ObjProperty<Obj,'name'>;
+type Result5 = ObjProperty<Obj2,'name'>;
 
 
 // 型エイリアス FilterByProperty は、ジェネリック型 T とプロパティキーのリテラル型 K、プロパティの値の型 V を引数に取ります。
@@ -170,3 +170,121 @@ const products_2: Product[] = [
 ];
 
 // console.log(filteredProducts2(products_2,'category','Fruit'));
+
+
+// 問題: 数値の配列が与えられたとき、配列内の要素を2倍にする関数 doubleArray を実装してください。関数は与えられた配列を変更せず、新しい配列を返す必要があります。
+
+// 具体的な要件:
+// doubleArray 関数は、数値の配列として number[] 型の引数 array を受け取ります。
+// 関数は新しい配列を返すため、元の配列 array は変更しないでください。
+// 関数の戻り値は、元の配列の要素を2倍にした配列としてください。
+
+type DoubleArray<T> = (array:T[]) => T[];
+
+const doubleArray:DoubleArray<number> = (array) => {
+  return array.map(val => val * 2);
+}
+// console.log(doubleArray([3,2,1,4]))
+
+
+// 型エイリアス FilterByAge を完成させてください。FilterByAge は、与えられたオブジェクトの配列から、指定された年齢以下のオブジェクトのみをフィルタリングするための関数型です。
+
+interface Person2 {
+  name: string;
+  age: number;
+}
+
+type FilterByAge<T> = (array:T[],maxAge:number) => T[];
+
+const people: Person2[] = [
+  { name: 'Alice', age: 25 },
+  { name: 'Bob', age: 30 },
+  { name: 'Charlie', age: 20 },
+  { name: 'David', age: 40 },
+];
+
+const filterByAge: FilterByAge<Person2> = (array, maxAge) => {
+  return array.filter(obj => obj.age <= maxAge);
+};
+
+const filteredPeople = filterByAge(people, 30);
+// console.log(filteredPeople);
+
+
+// 問題:
+// 与えられた文字列内の単語の個数を数える関数 countWords を実装してください。関数は以下の仕様を満たす必要があります。
+
+// 仕様:
+// countWords 関数は、文字列としての入力を受け取ります。
+// 関数は、与えられた文字列内の単語の個数を返します。
+// 単語は、スペースで区切られた文字列として定義されます。例えば、"Hello World" は 2 つの単語から構成されています。
+// 文字列内の連続したスペースは、1 つのスペースとして扱われます。例えば、"Hello World" は 2 つの単語から構成されています。
+
+const countWords = (str:string):number => {
+  return str.split(' ').filter(val => val !== '').length;
+}
+
+// console.log(countWords("Hello World")); // 2
+// console.log(countWords("This is a sentence.")); // 4
+// console.log(countWords("   There   are   spaces   ")); // 3
+// console.log(countWords("NoSpaces")); // 1
+// console.log(countWords("")); // 0
+
+
+// 問題: 配列内の数値要素の合計を計算する関数を作成してください。
+
+// 関数名: calculateSum
+// 引数: 数値の配列 (number[])
+// 戻り値: 合計値の数値 (number)
+// 制約:
+// 引数の配列は少なくとも1つの要素を持つものとします。
+// 引数の配列は正の整数のみを含みます。
+
+const calculateSum = (array:number[]) => {
+  return array.reduce((a,b) => a + b　, 0);
+}
+// console.log(calculateSum([1, 2, 3, 4, 5])); // 出力: 15
+// console.log(calculateSum([10, 20, 30, 40])); // 出力: 100
+// console.log(calculateSum([5])); // 出力: 5
+
+
+// 問題: 与えられた文字列 str を逆さにして返す関数 reverseString を作成してください。
+// 入力:
+// str (文字列): 逆さにする対象の文字列。
+// 出力:
+// 逆さになった文字列。
+
+type ReverseString = (str:string) => string;
+const reverseString:ReverseString = (str) => {
+  return str.split('').reverse().join('');
+}
+
+// console.log(reverseString('Hello')); // 'olleH'
+// console.log(reverseString('OpenAI')); // 'IAepnO'
+// console.log(reverseString('12345')); // '54321'
+
+
+// 文字列の配列を受け取り、文字列の長さが最も長い要素を返す関数 findLongestString を実装してください。
+// 配列の要素はすべて文字列であるとします。
+// 配列が空の場合は空文字列 ("") を返します。
+// 複数の要素が同じ最大の長さを持つ場合は、最初に出現する要素を返します。
+// 文字列の長さは、ユニコードコードポイントに基づいて計算されます（サロゲートペアや結合文字に対応しています）。
+// findLongestString の実装を提供してください。
+
+type FindLongestString<T> = (array:T[]) => T
+
+const findLongestString:FindLongestString<string> = (array) => {
+  const wordArray = array.map(val => val.length);
+  const max = wordArray.reduce((prev,next) => Math.max(prev,next));
+  const result = array.filter((val,index) => val.length == max)
+  
+  return result[0]
+}
+// console.log(findLongestString(["apple", "banana", "kiwi", "strawberry"])); // "strawberry"
+// console.log(findLongestString(["hello", "world", "openai"])); // "openai"
+// console.log(findLongestString(["cat", "dog", "elephant"])); // "elephant"
+
+
+
+
+
