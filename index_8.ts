@@ -285,6 +285,65 @@ const findLongestString:FindLongestString<string> = (array) => {
 // console.log(findLongestString(["cat", "dog", "elephant"])); // "elephant"
 
 
+// 与えられた文字列の配列から、重複している文字列を取り除いた配列を返す関数 removeDuplicates を実装してください。
+
+type RemoveDuplicates<T> = (array:T[]) => T[]
+const removeDuplicates: RemoveDuplicates<string> = (array) => {
+  return Array.from(new Set(array));
+};
+
+// console.log(removeDuplicates(["apple", "banana", "apple", "orange", "banana", "kiwi"])); // ["apple", "banana", "orange", "kiwi"]
+// console.log(removeDuplicates(["hello", "world", "hello", "openai"])); // ["hello", "world", "openai"]
+// console.log(removeDuplicates(["cat", "dog", "elephant", "dog", "cat"])); // ["cat", "dog", "elephant"]
+
+
+// 数値の配列が与えられたとき、各数値を2倍した新しい配列を返す関数 doubleNumbers を作成してください。
+// doubleNumbers 関数は、array という名前の数値の配列を引数として受け取ります。
+// 関数は、与えられた配列の各要素を2倍した新しい配列を返します。
+// 元の配列は変更せず、新しい配列を作成してください。
+
+type DoubleNumbers = (array:number[]) => number[]
+const doubleNumbers:DoubleNumbers = (array) => {
+  return array.map(val => val*2);
+}
+
+// console.log(doubleNumbers([1, 2, 3, 4, 5])); // [2, 4, 6, 8, 10]
+// console.log(doubleNumbers([0, -1, 10, -5])); // [0, -2, 20, -10]
+// console.log(doubleNumbers([3.14, 2.5, 1.618])); // [6.28, 5, 3.236]
+
+
+// 以下の要件を満たす関数を実装してください。
+
+// 関数名は sumArray とします。
+// 関数は以下の引数を受け取ります:
+// array: number[] - 数字の配列
+// 関数は配列の要素を合計してその結果を返します。
+
+const sumArray = (array:number[]):number => {
+  return array.reduce((a,b) => a + b )
+}
+
+// console.log(sumArray([1, 2, 3, 4, 5])); // 15
+// console.log(sumArray([0, -1, 10, -5])); // 4
+// console.log(sumArray([3.14, 2.5, 1.618])); // 7.258
 
 
 
+// 以下の型エイリアス GetValues を使用して、与えられたオブジェクトの配列から指定されたプロパティの値を取り出す関数 getValues を作成してください。
+type GetValues<T, K extends keyof T> = (array: T[], property: K) => T[K][];
+
+const getValues:GetValues<Users,keyof Users> = (array,property) => {
+  return array.map(val => val[property]);
+}
+type Users = {
+  id:number;
+  name:string;
+  age:number;
+}
+const users4 = [
+  { id: 1, name: 'Alice', age: 25 },
+  { id: 2, name: 'Bob', age: 30 },
+  { id: 3, name: 'Charlie', age: 20 },
+];
+// console.log(getValues(users4, 'name')); // ['Alice', 'Bob', 'Charlie']
+// console.log(getValues(users4, 'age')); // [25, 30, 20]
