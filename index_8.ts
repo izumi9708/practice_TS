@@ -347,3 +347,49 @@ const users4 = [
 ];
 // console.log(getValues(users4, 'name')); // ['Alice', 'Bob', 'Charlie']
 // console.log(getValues(users4, 'age')); // [25, 30, 20]
+
+
+// 以下の要件を満たす関数を実装してください。
+
+// 関数名: sumProperty
+// パラメータ:
+
+// array: オブジェクトの配列。各オブジェクトは同じプロパティを持つものとします。
+// property: 合計するプロパティの名前を指定します。
+// 戻り値: プロパティの値の合計値を返します。
+// 制約:
+
+// プロパティの値は数値型とします。
+// プロパティの値が存在しないオブジェクトは無視して合計を計算します。
+
+interface Product2 {
+  id: number;
+  name: string;
+  price: number;
+}
+
+type SumProperty = (array:Product2[],property:string) => number;
+
+const sumProperty:SumProperty = (array,property) => {
+  return array.map(val => val[property]).reduce((a,b) => a + b,0);
+}
+
+const products2: Product2[] = [
+  { id: 1, name: 'Apple', price: 100 },
+  { id: 2, name: 'Banana', price: 80 },
+  { id: 3, name: 'Carrot', price: 50 },
+  { id: 4, name: 'Milk', price: 200 },
+];
+
+// console.log(sumProperty(products2, 'price')); // 430 (100 + 80 + 50 + 200)
+
+
+// 与えられた文字列配列から、重複している要素を削除する関数 removeDuplicatesFromArray を作成してください。
+
+type RemoveDeplicatesFromArray<T> = (array:T[]) => T[]
+const removeDeplicatesFromArray:RemoveDeplicatesFromArray<string> = (array) => {
+  return Array.from(new Set(array));
+}
+const names: string[] = ['Alice', 'Bob', 'Alice', 'Charlie', 'Bob'];
+
+// console.log(removeDeplicatesFromArray(names))
