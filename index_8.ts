@@ -390,6 +390,135 @@ type RemoveDeplicatesFromArray<T> = (array:T[]) => T[]
 const removeDeplicatesFromArray:RemoveDeplicatesFromArray<string> = (array) => {
   return Array.from(new Set(array));
 }
-const names: string[] = ['Alice', 'Bob', 'Alice', 'Charlie', 'Bob'];
+const names2: string[] = ['Alice', 'Bob', 'Alice', 'Charlie', 'Bob'];
 
-// console.log(removeDeplicatesFromArray(names))
+// console.log(removeDeplicatesFromArray(names2))
+
+
+// 与えられた数値配列から、指定された数値よりも大きい要素のみをフィルタリングする関数 filterGreaterThan を作成してください。
+
+type FilterGreaterThan<T> = (array: T[], value: T) => T[];
+const filterGreaterThan:FilterGreaterThan<number> = (array,value) => {
+  return array.filter(val => val > value)
+}
+
+const numbers: number[] = [1, 5, 2, 8, 3];
+// console.log(filterGreaterThan(numbers,4))
+
+
+// オブジェクトの配列を受け取り、指定されたプロパティの値を抽出して新しい配列として返す関数を定義してください。
+
+// 関数名は extractProperty とします。
+// 型引数 T はオブジェクトの型を表します。
+// 関数のパラメータは以下のとおりです:
+// array: T[] - オブジェクトの配列。プロパティの値を抽出する対象となります。
+// property: keyof T - 抽出したいプロパティのキー。
+// 関数は、指定されたプロパティの値を抽出して新しい配列として返します。
+
+interface Person2 {
+  name: string;
+  age: number;
+}
+
+type ExtractProperty<T, K extends keyof T> = (array: T[], property: K) => T[K][];
+
+type Test2<T,K extends keyof T> = T[K];
+
+
+const extractProperty: ExtractProperty<Person2, keyof Person2> = (array, property) => {
+  return array.map(val => val[property]);
+}
+
+const people2: Person2[] = [
+  { name: 'Alice', age: 25 },
+  { name: 'Bob', age: 30 },
+  { name: 'Charlie', age: 20 },
+];
+
+const names:(string|number)[] = extractProperty(people2, 'name');
+// console.log(names); // ['Alice', 'Bob', 'Charlie']
+
+
+
+// 数値の配列を受け取り、奇数の要素をすべて取り除いた配列を返す関数 removeOddNumbers を実装してください。
+
+// 配列から奇数の要素を除去して、偶数の要素だけを含む新しい配列を返します。
+// 順序や元の配列の順序は保持される必要があります。
+// 元の配列は変更せず、新しい配列を作成してください。
+// 0は偶数として扱います。
+
+type RemoveOddNumbers = (array:number[]) => number[];
+const removeOddNumbers:RemoveOddNumbers = (array) => {
+  return array.filter(val => val % 2 === 0)
+} 
+// console.log(removeOddNumbers([1, 2, 3, 4, 5])); // [2, 4]
+// console.log(removeOddNumbers([0, 1, 2, 3, 4, 5, 6])); // [0, 2, 4, 6]
+// console.log(removeOddNumbers([15, 23, 48, 57, 62])); // [48, 62]
+
+
+// 以下の関数mergeArraysを完成させ、適切な型アノテーションを付けてください。mergeArraysは、複数の配列を受け取り、それらを1つの配列に結合して返す関数です
+
+type MergeArrays = <T,K,U>(arr1:T[],arr2:K[],arr3:U[]) => (T|K|U)[];
+const  mergeArrays:MergeArrays = (arr1, arr2, arr3)  => {
+  return [...arr1,...arr2,...arr3]
+}
+
+// console.log(mergeArrays<number,number,number>([1,2,3,4,5],[4,5,6,7],[8,9,10,11,13]));
+
+
+
+// 以下の関数filterByPropertyは、オブジェクトの配列とプロパティ名、およびそのプロパティの値を受け取り、指定されたプロパティの値が一致するオブジェクトのみをフィルタリングして返す関数です。関数の型アノテーションを完成させてください。
+
+type FilterByProperty3<T> = (objects:T[],property:keyof T, value:T[keyof T]) => T[];
+const filterByProperty2:FilterByProperty3<Objects2> = (objects, property, value) => {
+  return objects.filter(val => val[property] == value)
+}
+
+const objects:Objects2[] = [
+  { id: 1, name: 'Alice', age: 25 },
+  { id: 2, name: 'Bob', age: 30 },
+  { id: 3, name: 'Charlie', age: 35 }
+]
+
+interface Objects2  {
+  id:number;
+  name:string;
+  age:number
+}
+
+// console.log(filterByProperty(objects,'name','Alice'));
+
+
+// 以下の関数groupByPropertyは、オブジェクトの配列とグループ化するプロパティ名を受け取り、指定されたプロパティの値でグループ化されたオブジェクトのマップを返す関数です。関数の型アノテーションを完成させてください。
+
+type GroupByProperty<T,K extends keyof T> = (objects:T[],property:K) => {[key:string]:T}[]
+const groupByProperty:GroupByProperty<Objects2,keyof Objects2> = (objects, property) => {
+  return objects.map(val => {
+    const newObj = {};
+    newObj[val[property]] = val;
+    return newObj;
+  })
+}
+
+const objects2 = [
+  { id: 1, name: 'Alice', age: 25 },
+  { id: 2, name: 'Bob', age: 30 },
+  { id: 3, name: 'Charlie', age: 35 },
+  { id: 4, name: 'Alice', age: 40 }
+];
+const property = 'age';
+
+// console.log(groupByProperty(objects2,property));
+
+
+// TypeScriptのジェネリック型を使用して、以下の要件を満たすFilterという型を定義してください
+// Filterは、与えられた配列の要素をフィルタリングするために使用される関数です。
+// Filterは2つのジェネリック型パラメータを持ちます:
+// T: 元の配列の要素の型
+// U: フィルタリング条件として使用されるプロパティの型
+// Filterは、以下のプロパティを持ちます:
+// filterBy: フィルタリング条件として使用するプロパティの名前（文字列型）
+// value: フィルタリング条件として使用する値（U型）
+// Filterは、与えられた配列をフィルタリングして、条件に合致する要素の配列を返します。
+
+type Filter<T,U extends keyof T> = (array:T[],filterBy:U,value:T[U]) => T[];
