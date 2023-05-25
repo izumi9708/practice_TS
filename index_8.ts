@@ -522,3 +522,200 @@ const property = 'age';
 // Filterは、与えられた配列をフィルタリングして、条件に合致する要素の配列を返します。
 
 type Filter<T,U extends keyof T> = (array:T[],filterBy:U,value:T[U]) => T[];
+  
+  
+  // TypeScriptの型アサーション（Type Assertion）を使用して、以下の要件を満たすconvertToStringという関数を実装してください。
+
+// convertToStringは、与えられた引数を文字列に変換するために使用される関数です。
+// convertToStringは、以下の引数を持ちます:
+// value: 変換する値（任意の型）
+// convertToStringは、value を文字列に変換して返します。文字列に変換する方法は、以下のルールに従います:
+// もし value が文字列型であれば、そのままの値を返します。
+// もし value が数値型であれば、数値を文字列に変換して返します。
+// もし value が真偽値型であれば、真偽値を文字列に変換して返します。
+// もし value が配列型であれば、配列の要素を文字列に変換して、カンマで結合した文字列を返します。
+// それ以外の場合、value を文字列に変換して返します。
+
+type ConvertToString = <T>(value:T) => string; 
+
+const convertToString:ConvertToString = (value) => {
+  if(Array.isArray(value)){
+    return value.join(',');
+
+  }else if(typeof value == 'object'){
+    return JSON.stringify(value);
+
+  }else {
+    return String(value);
+  }
+}
+
+// 以下の要件を満たす isPalindrome 関数を実装してください。
+
+// isPalindrome 関数は、str という名前の文字列を引数に取ります。
+// 関数は、与えられた文字列が回文である場合は true を、回文でない場合は false を返します。
+// 回文の判定は、大文字と小文字を区別しないものとします。つまり、文字列を判定する前に大文字と小文字を統一してください。
+// 空の文字列は回文とみなします。
+
+const isPalindrome = (str:string):boolean => {
+  return str.toLocaleLowerCase().split('').reverse().join('') == str ? true : false
+}
+
+// console.log(isPalindrome("radar")); // true
+// console.log(isPalindrome("level")); // true
+// console.log(isPalindrome("Hello")); // false
+// console.log(isPalindrome("")); // true
+
+
+// 配列内の要素の中から重複している値を見つけ、それらを含む新しい配列を返す関数 findDuplicates を実装してください。
+
+// 仕様:
+// findDuplicates 関数は、配列を受け取り、重複している要素を含む新しい配列を返します。
+// 返される配列には、元の配列において重複している要素のみが含まれます。
+// 返される配列の要素の順序は元の配列の順序を保持します。
+
+type FindDuplicates = <T>(array:T[]) => T[];
+const findDuplicates:FindDuplicates
+ = (array) => {
+  return array.filter((val,index,array) => array.indexOf(val) !== index );
+}
+
+const numbers = [1, 2, 3, 4, 2, 5, 6, 3];
+// console.log(findDuplicates(numbers)); // [2, 3]
+
+const fruits = ["apple", "banana", "orange", "apple", "grape", "banana"];
+// console.log(findDuplicates(fruits)); // ["apple", "banana"]
+
+
+// 与えられた文字列がアナグラム（anagram）かどうかを判定する関数 isAnagram を実装してください。
+// 関数名は isAnagram とします。
+// 関数は2つの文字列 str1 と str2 を引数として受け取ります。
+// 関数は与えられた2つの文字列がアナグラムであれば true を、そうでなければ false を返します。
+// 文字列の比較は大文字と小文字を区別しないものとします。
+// 文字列に含まれるスペースや句読点などの特殊文字は無視します。
+
+type IsAnagram = (str1:string,str2:string) => boolean
+const isAnagram:IsAnagram = (str1,str2) => {
+  const str_1 = str1.split('');
+  const str_2 = str2.split('');
+
+  const result = str_1.filter(val => str_2.includes(val) );
+  return str_1.length === result.length ? true : false;
+}
+
+// console.log(isAnagram("listen", "silent")); // true
+// console.log(isAnagram("rail safety", "fairy tales")); // true
+// console.log(isAnagram("hello", "world")); // false
+
+
+
+// 与えられた配列に含まれるユニークな要素の数を数える関数 countUniqueElements を実装してください。
+// countUniqueElements 関数は、配列を受け取り、その配列内のユニークな要素の数を返します。
+// 配列内の要素は異なるデータ型である可能性があります。
+// ユニークな要素の数は、重複している要素は1つとしてカウントします。
+
+type CountUniqueElements = <T>(array:T[]) => number;
+const countUniqueElements:CountUniqueElements = (array) => {
+  return Array.from(new Set(array)).length;
+}
+
+// console.log(countUniqueElements([1, 2, 3, 4, 5])); // 5
+// console.log(countUniqueElements([1, 2, 2, 3, 3, 3, 4, 4, 4, 4])); // 4
+// console.log(countUniqueElements(["apple", "banana", "apple", "orange", "banana"])); // 3
+// console.log(countUniqueElements([])); // 0
+
+
+// 以下の要件を満たす shuffleArray 関数を実装してください。
+
+// 要件
+// shuffleArray 関数は、与えられた配列の要素をランダムに並び替えた新しい配列を返す。
+// 元の配列は変更せず、新しい配列を作成して返す。
+// シャッフルには Fisher-Yates アルゴリズムを使用する。
+// 以下は shuffleArray 関数の使用例です。
+
+const array = [1, 2, 3, 4, 5];
+
+type ShuffleArray = <T>(array:T[]) => T[];
+const shuffleArray:ShuffleArray = (array) => {
+  let randomArray = [];
+  let resultArray = [];
+
+  while(randomArray.length < 5){
+    const random = Math.floor(Math.random() * array.length)
+    randomArray.push(random);
+    randomArray = Array.from(new Set(randomArray));
+  }
+
+  return randomArray.map(val => array[val]);
+  
+}
+
+const shuffled = shuffleArray(array);
+// console.log(shuffled); // シャッフルされた配列の表示例: [5, 1, 4, 2, 3]
+// console.log(array); // 元の配列は変更されていない: [1, 2, 3, 4, 5]
+
+
+// 与えられた文字列の中で最も出現回数が多い文字を返す findMostFrequentCharacter 関数を実装してください。
+
+type FindMostFrequentCharacter = (str: string) => string;
+
+const findMostFrequentCharacter:FindMostFrequentCharacter = (str) => {
+  let obj:{[key:string]:number} = {};
+  let maxCount = 0;
+  let maxStr = '';
+
+  for(let i of str){
+    obj[i] = (obj[i] || 0)  + 1;
+
+    if(obj[i] > maxCount){
+      maxStr   = i;
+    }
+  }
+
+  return maxStr;
+}
+
+// console.log(findMostFrequentCharacter("Hello")) //=> "l"
+// console.log(findMostFrequentCharacter("Mississippi")) //=> "s"
+// console.log(findMostFrequentCharacter("abcdefg")) //=> "a" (もしくは "b", "c", "d", "e", "f", "g" のいずれか)
+
+
+// 文字列内のすべての単語を逆順にする関数 reverseWords を作成してください。文字列内の単語はスペースで区切られています。
+// ただし、単語の間には複数のスペースがある場合でも、単語の順序を逆にした後に単語間のスペースは1つになるようにしてください。
+// 入力:
+// str: 文字列
+// 出力:
+// すべての単語を逆順にした結果の文字列
+
+type ReverseWords = (str:string) => string;
+const reverseWords:ReverseWords = (str) => {
+  const reverse = str.split(' ').reverse();
+  console.log(reverse)
+  return reverse.join(' ')
+}
+
+// console.log(reverseWords("Hello world")); // 出力: "world Hello"
+// console.log(reverseWords("   I   love   JavaScript   ")); // 出力: "JavaScript love I"
+// console.log(reverseWords("  Good   morning ")); // 出力: "morning Good"
+
+
+
+// 次の要件を満たす型を定義してください。
+
+// Person 型: name プロパティ（文字列型）と age プロパティ（数値型）を持つオブジェクト型です。
+// Student 型: Person 型を拡張したオブジェクト型で、さらに university プロパティ（文字列型）を持ちます。
+// Teacher 型: Person 型を拡張したオブジェクト型で、さらに subject プロパティ（文字列型）を持ちます。
+// 上記の要件を満たす型定義を実装してください。
+
+interface Person  {
+  name:string;
+  sge:number;
+}
+interface Student extends Person {
+  university:string
+}
+interface Teacher extends Person {
+  subject:string
+}
+
+
