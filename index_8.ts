@@ -522,3 +522,5 @@ const property = 'age';
 // Filterは、与えられた配列をフィルタリングして、条件に合致する要素の配列を返します。
 
 type Filter<T,U extends keyof T> = (array:T[],filterBy:U,value:T[U]) => T[];
+
+
