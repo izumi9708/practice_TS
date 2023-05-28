@@ -159,3 +159,110 @@ const products3: Product3[] = [
 
 // console.log(calculateTotalPrice(products)); // 出力: 430
 
+
+// 配列内の数値の平均値を計算する関数 calculateAverage を実装してください。関数のシグネチャは以下の通りです。
+
+type CalculateAverage = (array:number[]) => number; 
+
+const calculateAverage:CalculateAverage = (array) => {
+  return array.reduce((a,b) => a + b) / array.length
+}
+// console.log(calculateAverage([1, 2, 3, 4, 5])); // 出力: 3
+// console.log(calculateAverage([10, 20, 30, 40, 50])); // 出力: 30
+// console.log(calculateAverage([2, 4, 6, 8, 10])); // 出力: 6
+
+
+// 配列の要素を辞書順にソートする関数 sortArray を実装してください。ただし、与えられる配列は文字列のみからなり、大文字と小文字を区別しないものとします。
+// 入力配列 array の要素数は 1 以上です。
+// 入力配列 array の要素は文字列で構成されています。
+
+type SortArray = (array:string[]) => string[];
+const sortArray = (array) => {
+  return array.map(val => val.toLowerCase()).sort((a,b) => a > b ? 1 : -1)
+}
+
+const array1 = ["banana", "apple", "Orange", "grape"];
+// console.log(sortArray(array1)); // 出力: ["apple", "banana", "grape", "Orange"]
+
+const array2 = ["zebra", "Tiger", "lion", "Elephant"];
+// console.log(sortArray(array2)); // 出力: ["Elephant", "lion", "Tiger", "zebra"]
+
+
+// 以下の仕様に基づいて、指定された要素の個数を数える関数 countOccurrences を実装してください。
+// 仕様:
+// countOccurrences 関数は、配列と要素を引数として受け取ります。
+// 関数は、配列内で指定された要素が出現する回数を返します。
+// 配列内に要素が存在しない場合は、回数は 0 とします。
+type Count0ccurrences = <T>(array:T[],element:T) => number;
+
+const countOccurrences:Count0ccurrences = (array,element) => {
+  return array.filter(val => val === element).length;
+}
+
+const numbers = [1, 2, 3, 4, 2, 1, 2, 3, 1];
+// console.log(countOccurrences(numbers, 2)); // 出力: 3
+// console.log(countOccurrences(numbers, 5)); // 出力: 0
+
+const fruits = ["apple", "banana", "apple", "orange", "apple"];
+// console.log(countOccurrences(fruits, "apple")); // 出力: 3
+// console.log(countOccurrences(fruits, "grape")); // 出力: 0
+
+
+// Filter<T, U> 型は、ジェネリック型 T のプロパティのうち、U に指定されたプロパティ名のみを持つ新しい型を返します。
+// Filter<T, U> 型は、T のプロパティ名を走査し、U に指定されたプロパティ名と一致するプロパティのみを持つ新しい型を返します。
+// U には単一のプロパティ名を指定します。
+
+type Filter<T,U extends keyof T> = Pick<T,U>;
+
+type User = {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+};
+
+type FilteredUser = Filter<User, "name" | "email">;
+// 期待される型: { name: string; email: string; }
+
+
+
+// FilterArray<T, U> 型は、ジェネリックな型パラメータ T と U を持ちます。
+// T は配列型であり、要素の型は任意の型です。
+// U は T の要素型のユニオン型です。
+// FilterArray 型は、T の要素のうち、U に指定された型に一致する要素のみを持つ新しい配列型を表します。
+
+type MyArray = [string, number, boolean, string[]];
+
+type FilterArray<T,U> = {
+  [K in keyof T]: T[K] extends U ? T[K] : (T[K] extends Array<U> ? T[K] : undefined)
+}
+
+
+type FilteredArray1 = FilterArray<MyArray, string>;
+// 期待される型: [string, string[]]
+
+type FilteredArray2 = FilterArray<MyArray, number | boolean>;
+// 期待される型: [number, boolean]
+
+
+// 以下の MergeObjects 型を実装してください。この型は、複数のオブジェクト型を受け取り、それらのプロパティをすべて結合した新しいオブジェクト型を返します。
+// T 型はオブジェクト型のタプルとして与えられます。
+// keyof キーワードを使用してオブジェクト型のキーのユニオン型を取得できます。
+// keyof T[number] は T 型のすべての要素のキーのユニオン型を表します。
+// T[number] は T 型のすべての要素の結合型を表します。
+// Pick 型やマップ型を使って必要なプロパティを選択・結合することができます。
+
+type UnionToIntersection<T> = (T extends any ? (k:T) => void : never) extends ((k:infer U) => void) ? U : never;
+
+type MergeObjects<T extends object[]> = UnionToIntersection<T[number]>
+
+type Object1 = { id: number; name: string };
+type Object2 = { age: number; address: string };
+type Object3 = { isActive: boolean };
+
+type MergedObject = MergeObjects<[Object1, Object2, Object3]>;
+// 期待される型: { id: number; name: string; age: number; address: string; isActive: boolean; }
+
+
+
+
