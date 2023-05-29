@@ -263,5 +263,106 @@ type MergedObject = MergeObjects<[Object1, Object2, Object3]>;
 // 期待される型: { id: number; name: string; age: number; address: string; isActive: boolean; }
 
 
+// Partial<T>」型を使用せずに、オブジェクトの一部のプロパティをオプショナルにする型「MyPartial<T>」を実装してください。
+
+type MyPartial<T> = {
+  [K in keyof T]?:T[K]
+};
+
+// 使用例
+type Person = {
+  name: string;
+  age: number;
+  address: string;
+};
+
+type PartialPerson = MyPartial<Person>;
+// 期待される型: { name?: string; age?: number; address?: string; }
+
+
+// MyRequired<T>は、与えられた型Tのすべてのプロパティを必須にする型を返します。
+// Tはオブジェクト型とします。
+type Person2 = {
+  name?: string;
+  age?: number;
+  address?: string;
+};
+
+type MyRequired<T> = Required<T>
+
+type RequiredPerson = MyRequired<Person2>;
+// 期待される型: { name: string; age: number; address: string; }
+
+
+
+// 与えられたオブジェクト型 T から、指定されたプロパティ K を除外する Omit 型を定義してください。ただし、K は T のキーのサブセットであるとします。
+
+type Person3 = {
+  name: string;
+  age: number;
+  address: string;
+};
+
+type MyOmit<T,K extends keyof T> = Omit<T,K>;
+
+type OmittedPerson = MyOmit<Person, 'age' | 'address'>;
+// 期待される型: { name: string; }
+
+
+// 与えられたオブジェクトのプロパティをすべて任意の値（undefined も含む）に設定する型を作成してください。ただし、元のオブジェクトの構造は変更せず、すべてのプロパティがオプショナルとなるようにしてください。
+
+type Input = {
+  name: string;
+  age: number;
+  address: string;
+};
+
+type SetOptional<T> = Partial<T>
+
+type Result = SetOptional<Input>;
+
+
+// TypeScriptにおいて、与えられた配列から重複する要素を削除する関数 removeDuplicates を実装してください
+
+type RemoveDuplicates = <T>(array: T[]) => T[];
+
+const removeDuplicates:RemoveDuplicates = (array) => {
+  return Array.from(new Set(array));
+}
+
+const numbers = [1, 2, 3, 4, 2, 1, 2, 3, 1];
+// console.log(removeDuplicates(numbers)); // 出力: [1, 2, 3, 4]
+
+const fruits = ["apple", "banana", "apple", "orange", "apple"];
+// console.log(removeDuplicates(fruits)); // 出力: ["apple", "banana", "orange"]
+
+
+// TypeScriptのジェネリック型を使用して、与えられた配列の要素をランダムにシャッフルする shuffleArray 関数を実装してください。ただし、元の配列は変更せずに新しいシャッフルされた配列を返すようにしてください。
+
+type ShuffleArray = <T>(array:T[]) => T[];
+const shuffleArray:ShuffleArray = (array) => {
+  let randomArray = [];
+  let resultArray = [];
+
+  while(randomArray.length < array.length){
+    const random = Math.floor(Math.random() * array.length);
+
+   randomArray.push(random);
+   randomArray = Array.from(new Set(randomArray))
+  }
+
+  return randomArray.map(val => array[val]);
+}
+
+const numbers2 = [1, 2, 3, 4, 5];
+const shuffledNumbers = shuffleArray(numbers2);
+console.log(shuffledNumbers); // シャッフルされた配列の例: [3, 5, 1, 2, 4]
+
+const fruits2 = ["apple", "banana", "orange", "kiwi"];
+const shuffledFruits = shuffleArray(fruits2);
+console.log(shuffledFruits); // シャッフルされた配列の例: ["banana", "kiwi", "orange", "apple"]
+
+
+
 
 
