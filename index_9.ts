@@ -362,6 +362,53 @@ const fruits2 = ["apple", "banana", "orange", "kiwi"];
 const shuffledFruits = shuffleArray(fruits2);
 console.log(shuffledFruits); // シャッフルされた配列の例: ["banana", "kiwi", "orange", "apple"]
 
+// mapToObject 関数を実装してください。この関数は、キーと値のペアの配列を受け取り、それをオブジェクトに変換します。ただし、キーは文字列型、値は数値型とします。同じキーが複数回出現した場合、最後の値が採用されます。
+
+type KeyValue = [string, number];
+
+type MapToObject = <T>(arr:T[]) => {[key:string]:number};
+const mapToObject: MapToObject = (arr) => {
+  const obj:{[key:string]:number} = {};
+  const result = arr.forEach(val => {
+    obj[val[0]] = val[1];
+  })
+
+  return obj;
+};
+
+// 使用例
+const array: KeyValue[] = [
+  ["a", 1],
+  ["b", 2],
+  ["c", 3],
+  ["a", 4],
+];
+
+const result = mapToObject(array);
+console.log(result);
+// 出力: { a: 4, b: 2, c: 3 }
+
+
+// 以下の要件を満たす TypeScript の型を定義してください。
+
+// FilterKeys<T, U> というジェネリック型を定義します。
+// T はオブジェクト型を表し、U はそのオブジェクト型のプロパティキーのユニオン型を表します。
+// FilterKeys<T, U> の結果型は、T のプロパティキーのうち U に含まれるものだけを持つ新しいオブジェクト型となります。
+
+type FilterKeys<T,U extends keyof T> = Pick<T,U>;
+
+type User = {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+};
+
+type FilteredKeys = FilterKeys<User, "id" | "email">;
+// 期待される型: { id: number; email: string; }
+
+
+
 
 
 
