@@ -409,6 +409,146 @@ type FilteredKeys = FilterKeys<User, "id" | "email">;
 
 
 
+// TypeScriptのキーを除外する型 ExcludeKey<T, K> を実装してください。この型は、オブジェクト型 T からキー K を除外した新しいオブジェクト型を生成します。
+
+type User = {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+};
+
+type ExcludeKey<T,K extends keyof T> = Omit<T,K>
+
+type ExcludedUser = ExcludeKey<User, "age" | "email">;
+// 期待される型: { id: number; name: string; }
+
+
+
+// 以下の要件に基づいて、TypeScriptの型定義を作成してください。
+
+// Userというインターフェースを定義します。Userは以下のプロパティを持ちます。
+
+// id: 数値型
+// name: 文字列型
+// age: 数値型
+// email: 文字列型
+// fetchUserという関数を定義します。この関数は非同期関数として作成し、引数としてidを受け取ります。戻り値の型はPromise<User>とします。
+
+// 非同期でAPIなどからユーザー情報を取得し、UserオブジェクトをPromiseで返します。
+// getUserDataという関数を定義します。この関数は非同期関数として作成し、引数としてidを受け取ります。戻り値の型はPromise<{ id: number; email: string; }>とします。
+
+// fetchUser関数を使用して指定されたidのユーザー情報を取得します。
+// 取得したユーザー情報からidとemailのプロパティを抽出したオブジェクトをPromiseで返します。
+
+interface User2 {
+  id:string;
+  createdAt:number;
+}
+
+type GetUserData<T> = () => Promise<T>;
+type FetchUser<T> = (id:T) => Promise<T>; 
+
+async function main() {
+  const userData = await getUserData();
+  const fetch = await fetchUser(userData.id);
+  return fetch;
+}
+
+
+const getUserData:GetUserData<User2> = async () => {
+  const form = new FormData();
+  form.append('name', "morpheus");
+  form.append('job','leader');
+
+  const result = await fetch('https://reqres.in/api/users',{
+    method:'post',
+    headers : {
+      'Accept': 'application/json',
+    },
+    body:form
+  })
+
+  return result.json();
+}
+
+const fetchUser:FetchUser<string> = async (id) => {
+    return id;
+}
+ 
+// main().then(res => console.log(res))
+
+
+type MyObject = {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+};
+
+type PickProperties<T, K extends keyof T> = Pick<T,K>
+
+type PickedObject = PickProperties<MyObject, "name" | "email">;
+// 期待される型: { name: string; email: string; }
+
+
+// ジェネリック型ExcludeProperties<T, K>を定義してください。この型は、オブジェクト型Tから指定されたプロパティKを除外した型を表現します。
+// 具体的には、ExcludeProperties<T, K>は以下の条件を満たす必要があります:
+// Tはオブジェクト型として定義されています。
+// KはTのプロパティ名、またはTのプロパティ名の配列です。
+
+type User3 = {
+  id: number;
+  name: string;
+  age: number;
+};
+
+type ExcludeProperties<T,K extends keyof T> = Omit<T,K>
+
+type ExcludedUser3 = ExcludeProperties<User3, 'age'>;
+// 期待される型: { id: number; name: string; }
+
+type ExcludedUser2 = ExcludeProperties<User3, 'name' | 'age'>;
+// 期待される型: { id: number; }
+
+
+
+// 与えられたオブジェクトから、特定のキーを除外し、残りのプロパティの値をnullableにする型OmitAndNullable<T, K>を定義してください。Tは入力オブジェクトの型を表し、Kは除外するキーのユニオン型です。
+
+type User4 = {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+};
+
+type PropertyOptional<T,K extends keyof T> = Partial< Pick<T,K> > & Omit<T,K>;
+type ValueNull<T,K extends keyof T> = {
+  [U in keyof T]:T[U] extends K ? T[U]|null : T[U];
+}
+type OmitAndNullable<T,K extends keyof T> = ValueNull<T,K>
+type ModifiedUser = OmitAndNullable<PropertyOptional<User4,'age' | 'email'>, 'age' | 'email'>;
+
+const obj:ModifiedUser = {
+  id:4,
+  name:'aa',
+  age:null,
+  email:null
+}
+
+
+/*
+期待される型:
+{
+  id: number;
+  name: string;
+  age?: number | null;
+  email?: string | null;
+}
+*/
+
+
+
 
 
 
