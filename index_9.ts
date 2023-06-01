@@ -548,6 +548,124 @@ const obj:ModifiedUser = {
 */
 
 
+// 与えられたオブジェクトのプロパティのうち、指定された型に一致するプロパティのみを抽出する型PickPropertiesOfTypeを定義してください。
+// T：対象のオブジェクト型。
+// U：抽出したいプロパティの型。
+
+type User = {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+};
+
+type PickPropertiesOfType<T,U> = {
+  [K in keyof T as T[K] extends U ? K : never]:T[K] 
+}
+
+type StringProperties = PickPropertiesOfType<User, string>;
+// 期待される型: { name: string; email: string; }
+
+type NumericProperties = PickPropertiesOfType<User, number>;
+// 期待される型: { id: number; age: number; }
+
+
+// 与えられたオブジェクトのプロパティ名をユニオン型として取得する型を定義してください。
+
+type User2 = {
+  id: number;
+  name: string;
+  age: number;
+};
+
+type ElementType<T> =　keyof T
+
+type UserElement = ElementType<User2>;
+// 期待される型: "id" | "name" | "age"
+
+
+
+// 与えられたオブジェクトのプロパティの値を、別の型に変換するMapValues<T, U>という型を定義してください。
+
+type User3 = {
+  id: number;
+  name: string;
+  age: number;
+};
+
+type MapValues<T,U> = {
+  [K in keyof T]: U
+}
+
+type Stringify<T> = MapValues<T, string>;
+
+type StringifiedUser = Stringify<User3>;
+/*
+期待される型:
+{
+  id: string;
+  name: string;
+  age: string;
+}
+*/
+
+
+// 与えられたオブジェクト型から、指定されたプロパティを除外する型ExcludeProperties<T, K>を定義してください。
+
+type User4 = {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+};
+
+type ExcludeProperties<T,U extends keyof T> = Omit<T,U>;
+
+type ExcludedUser = ExcludeProperties<User4, 'age' | 'email'>;
+/*
+期待される型:
+{
+  id: number;
+  name: string;
+}
+*/
+
+
+// DeepPartial<T>は、入力のオブジェクト型Tの各プロパティを再帰的にオプショナルにする型です。つまり、Tの全てのプロパティを再帰的にundefinedもしくはそのプロパティの型のunion型にします。
+
+type DeepPartial<T> = {
+  [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K]|undefined;
+}
+
+
+type User5 = {
+  id: number;
+  name: string;
+  address: {
+    street: string;
+    city: string;
+  };
+};
+
+type Result = DeepPartial<User5>
+
+
+
+// オブジェクト型 T のプロパティのうち、値の型が U に一致するプロパティのみを持つ型を作成します。
+
+type User6 = {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+};
+
+type FilterByValueType<T, U> = {
+  [K in keyof T as T[K] extends U ? K : never]:T[K]
+}
+
+type FilterProperty = FilterByValueType<User6,number>
+
 
 
 
