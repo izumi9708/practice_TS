@@ -668,6 +668,80 @@ type FilterProperty = FilterByValueType<User6,number>
 
 
 
+// 与えられたオブジェクト型 T のプロパティの値を、指定された型 U に変換するマップ型 MapPropertyValues<T, U> を実装してください。変換後の型は、元のオブジェクト型 T と同じプロパティを持ちますが、各プロパティの値は型 U に変換されます。
+
+type User = {
+  id: number;
+  name: string;
+  age: string;
+};
+
+type MapPropertyValues<T,U> = {
+  [K in keyof T]:T[K] extends U ? T[K] : number;
+}
+
+type MappedUser = MapPropertyValues<User, number>;
+// 期待される型: { id: number; name: number; age: number; }
+
+
+// 与えられた型Tのプロパティを全てオプショナルにする型PartialProperties<T>を定義してください。ただし、Tはオブジェクト型とします。
+type User2 = {
+  id: number;
+  name: string;
+  age: number;
+};
+
+type PartialProperties<T> = Partial<T>
+
+type PartialUser = PartialProperties<User>;
+// 期待される型: { id?: number; name?: string; age?: number; }
+
+
+// 型をマージして、新しい型UserAddressを作成する方法を示してください。UserAddressはUserとAddressのプロパティを持つ型となります。
+
+type User3 = {
+  id: number;
+  name: string;
+};
+
+type Address = {
+  city: string;
+  country: string;
+};
+
+type UserAddress = User3 & Address;
+
+
+// 以下のUser型から、ageプロパティを除外した新しい型を作成してください。
+type User4 = {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+};
+
+type Result = Omit<User4,'age'>;
+
+
+
+// mergeObjects関数は、複数のオブジェクトを受け取り、それらをマージして新しいオブジェクトとして返す関数です。型アノテーションを追加して、適切な型情報を指定してください。
+
+function mergeObjects<T extends object>(...objects:T[]): T {
+  return Object.assign({}, ...objects);
+}
+
+
+
+// 以下のfilterByAge関数は、personsというPerson型の配列と、minAgeとmaxAgeという数値を受け取り、指定された年齢範囲に該当する人物をフィルタリングして新しい配列として返す関数です。型アノテーションを追加して、適切な型情報を指定してください。
+
+function filterByAge<T extends {age:number}>(persons:T[], minAge:number, maxAge:number): T[] {
+  return persons.filter(person => person.age >= minAge && person.age <= maxAge);
+}
+
+
+
+
+
 
 
 
