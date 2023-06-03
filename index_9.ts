@@ -740,6 +740,45 @@ function filterByAge<T extends {age:number}>(persons:T[], minAge:number, maxAge:
 
 
 
+// 以下の型 Product を使用して、次の条件を満たす型 DiscountedProduct を定義してください。
+
+// Product 型の全てのプロパティを継承します。
+// price プロパティの型は number ではなく number | null となります。
+
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+};
+
+type DiscountedProduct<T> = {
+  [K in keyof T]:K extends 'price' ? number | null : T[K];
+}
+
+
+
+// 以下の型 Order を使用して、次の条件を満たす型 OrderSummary を定義してください。
+
+// Order 型の一部のプロパティのみを持ちます。
+// id プロパティの型は number ではなく string となります。
+// product プロパティの型は string ではなく string[] となります。
+
+type Order = {
+  id: number;
+  product: string;
+  quantity: number;
+  price: number;
+};
+
+type Judge = Pick<Order, 'id' | 'product'>;
+
+type OrderSummary = {
+  [K in keyof Judge]:K extends 'id' ? string : string[];
+}
+
+
+
+
 
 
 
