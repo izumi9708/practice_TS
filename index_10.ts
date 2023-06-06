@@ -157,3 +157,34 @@ type User8 = {
   age:number;
   email:string;
 }
+
+
+// 関数 mergeObjects は、複数のオブジェクトを受け取り、それらをマージして新しいオブジェクトを返します。
+// マージの際、同じキーが存在する場合は後のオブジェクトの値で上書きされます。
+// 関数のシグネチャは以下の通りです：
+// 関数名: mergeObjects
+// パラメータ: objs (任意の数のオブジェクト)
+// 戻り値: マージされたオブジェクト
+
+const obj1 = { name: 'John', age: 30 };
+const obj2 = { age: 35, email: 'john@example.com' };
+const obj3 = { address: '123 Main St' };
+
+const mergeObjects = (...obj:object[]) => {
+  const resultObj = {};
+  obj.forEach(val => {
+    const obj2 = Object.keys(val)
+    
+    obj2.forEach(val2 => {
+      if(!resultObj[val2]){
+        resultObj[val2] = val[val2]
+      }
+    })
+  })
+
+  return resultObj
+}
+const mergedObj = mergeObjects(obj1, obj2, obj3);
+
+// console.log(mergedObj); // 出力: { name: 'John', age: 35, email: 'john@example.com', address: '123 Main St' }
+
