@@ -166,11 +166,11 @@ type User8 = {
 // パラメータ: objs (任意の数のオブジェクト)
 // 戻り値: マージされたオブジェクト
 
-const obj1 = { name: 'John', age: 30 };
-const obj2 = { age: 35, email: 'john@example.com' };
-const obj3 = { address: '123 Main St' };
+const obj4 = { name: 'John', age: 30 };
+const obj5 = { age: 35, email: 'john@example.com' };
+const obj6 = { address: '123 Main St' };
 
-const mergeObjects = (...obj:object[]) => {
+const mergeObjects2 = (...obj:object[]) => {
   const resultObj = {};
   obj.forEach(val => {
     const obj2 = Object.keys(val)
@@ -184,7 +184,68 @@ const mergeObjects = (...obj:object[]) => {
 
   return resultObj
 }
-const mergedObj = mergeObjects(obj1, obj2, obj3);
+const mergedObj = mergeObjects2(obj4, obj5, obj6);
 
 // console.log(mergedObj); // 出力: { name: 'John', age: 35, email: 'john@example.com', address: '123 Main St' }
 
+
+// 与えられた配列の要素を逆順に並べ替える reverseArray という関数を作成してください。ただし、新しい配列を作成せずに元の配列を直接変更するようにしてください。
+
+function reverseArray<T>(arr: T[]): void {
+  arr.reverse();
+}
+
+const numbers5 = [1, 2, 3, 4, 5];
+reverseArray(numbers5);
+// console.log(numbers);
+
+
+
+// getUser 関数を使って、getUserList という関数を作成してください。getUserList 関数は、与えられた id の配列を使って、複数のユーザー情報を非同期に取得し、その結果を配列として返します。
+
+async function getUser(id: number): Promise<{ id: number, name: string, age: number }> {
+  const user = { id: 1, name: 'John Doe', age: 30 };
+  return user;
+}
+
+async function getUserList(ids: number[]): Promise<{ id: number, name: string, age: number }[]> {
+  const array = [];
+
+  for(let i of ids){
+    await getUser(i).then(res => res.id === i ? array.push(res):'')
+  }
+
+  return array;
+}
+
+const ids = [1, 2, 3];
+getUserList(ids).then((users) => {
+  // console.log(users);
+});
+
+
+
+// 与えられた数値の配列 numbers を受け取り、奇数の要素だけを抽出して新しい配列として返す関数 filterOddNumbers を実装してください。
+function filterOddNumbers(numbers: number[]): number[] {
+  return numbers.filter(val => val % 2 !== 0)
+}
+
+const numbers6 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const oddNumbers = filterOddNumbers(numbers6);
+// console.log(oddNumbers); // 出力: [1, 3, 5, 7, 9]
+
+
+
+// / 配列内の数値要素をすべて2倍にする関数 doubleNumbers を作成してください。
+
+  // 入力: numbers: number[] - 数値の配列
+  // 出力: number[] - 数値要素が2倍になった新しい配列
+
+  const numbers7 = [1, 2, 3, 4, 5];
+
+  type DoubleNumbers2 = (numbers:number[]) => number[];
+  const doubleNumbers2:DoubleNumbers2 = (numbers) => {
+    return numbers.map(val => val * 2);
+  }
+  const doubled = doubleNumbers2(numbers7);
+  console.log(doubled); // 出力: [2, 4, 6, 8, 10]
