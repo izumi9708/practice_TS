@@ -249,3 +249,43 @@ const oddNumbers = filterOddNumbers(numbers6);
   }
   const doubled = doubleNumbers2(numbers7);
   console.log(doubled); // 出力: [2, 4, 6, 8, 10]
+
+  // joinArray 関数を実装してください。この関数は、与えられた文字列の配列を結合して、1つの文字列として返します。
+
+type JoinArray = (arr: string[], separator: string) => string;
+
+const joinArray: JoinArray = (arr, separator) => {
+  return arr.join(separator)
+};
+
+const fruits3 = ["apple", "banana", "orange"];
+const joined = joinArray(fruits3, ", ");
+
+// console.log(joined); // 出力: "apple, banana, orange"
+
+
+
+// 数値の配列が与えられた場合、配列内の要素の合計値を返す関数 sumArray を TypeScript で定義してください。
+
+const sumArray3 = (array:number[]):number => {
+  return array.reduce((a,b) => a + b)
+}
+
+const numbers10 = [1, 2, 3, 4, 5];
+const sum2 = sumArray3(numbers10);
+// console.log(sum2); // 出力: 15
+
+
+
+// 配列内の数値要素をすべて2倍にする関数 doubleArray を定義してください。
+
+const numbers8 = [1, 2, 3, 4, 5];
+
+type DoubleNumbers3 = (array:number[]) => number[]
+const doubleArray3:DoubleNumbers = (array) => {
+  return array.map(val => val * 2);
+}
+
+const doubledNumbers = doubleArray(numbers8);
+// console.log(doubledNumbers); // 出力: [2, 4, 6, 8, 10]
+
