@@ -289,3 +289,51 @@ const doubleArray3:DoubleNumbers = (array) => {
 const doubledNumbers = doubleArray(numbers8);
 // console.log(doubledNumbers); // 出力: [2, 4, 6, 8, 10]
 
+
+
+// 文字列の配列 words が与えられたとき、各文字列の長さを返す関数 getWordLengths を作成してください。ただし、返される配列の要素は各文字列の長さと同じ順序でなければなりません。
+
+const words = ['apple', 'banana', 'car'];
+const lengths = getWordLengths(words);
+
+function getWordLengths(array:string[]):number[]{
+  return array.map(val => val.length);
+}
+// console.log(lengths); // 出力: [5, 6, 3]
+
+
+
+// 与えられた文字列の配列から特定の文字列を検索する関数 searchString を実装してください。
+
+// searchString 関数は2つの引数を受け取ります：array（文字列の配列）と search（検索する文字列）。
+// searchString 関数は、array 内の各文字列を検査し、search 文字列と完全に一致する場合にその文字列を含む新しい配列を返します。
+// 大文字と小文字は区別されます。つまり、一致する文字列は完全に一致する必要があります。
+// 一致する文字列が見つからない場合、空の配列を返します。
+
+const words2 = ['apple', 'Banana', 'Car', 'apple', 'car'];
+const searchWord = 'ar';
+
+type SearchString = (array:string[],word:string) => string[]
+const searchString:SearchString = (array,word) => {
+  return array.filter(val => val.indexOf(word) !== -1)
+}
+
+const searchResults = searchString(words2, searchWord);
+// console.log(searchResults); // 出力: ['Car', 'car']
+
+
+
+// 以下の配列から、重複している要素を削除する関数removeDuplicatesを実装してください。ただし、元の配列の順序は保持するものとします。
+
+const numbers = [1, 2, 3, 4, 3, 2, 5, 6, 1, 4];
+
+const removeDuplicates = (array) => {
+  return Array.from(new Set(array))
+
+}
+// console.log(removeDuplicates(numbers))
+
+
+
+
+
