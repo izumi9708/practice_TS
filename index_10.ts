@@ -335,5 +335,63 @@ const removeDuplicates = (array) => {
 
 
 
+// 与えられた数値の配列から、最大値と最小値を取得する関数 getMinMax(numbers: number[]): { min: number, max: number } を実装してください。返り値は最小値と最大値を持つオブジェクトです。
+// 高階関数（map、filter、reduceなど）を使用して解答してください。
+// Mathオブジェクトなどの組み込み関数やメソッドを使用しないでください。
+
+
+type MaxMin = {
+  max:number,
+  min:number
+}
+type FilterMaxMin = (array:number[]) => MaxMin;
+const filterMaxMin:FilterMaxMin = (array) => {
+  const result:MaxMin = {max:0,min:0};
+
+  const sort = array.sort((a,b) => a - b);
+
+  result.min = sort[0];
+  result.max = sort[sort.length - 1];
+  
+  return result
+}
+
+// console.log(filterMaxMin([10, 5, 8, 3, 12]));
+
+
+// 数字の配列が与えられたとき、重複している数字をすべて取り除いた配列を返す関数 removeDuplicates を実装してください。
+
+// 配列の要素は整数とします。
+// 配列の要素の順序は保持する必要があります。
+// 追加のデータ構造（Setなど）を使用せず、配列内での操作のみを使用して解決してください。
+// filter や indexOf、includes メソッドは使用しないでください。
+// 解答には関数 removeDuplicates の実装のみを含めてください。実行結果の表示は不要です。
+
+const numbers = [1, 2, 3, 2, 4, 3, 5];
+const uniqueNumbers = removeDuplicates(numbers);
+console.log(uniqueNumbers); // 出力: [1, 2, 3, 4, 5]
+
+function removeDuplicates(array:number[]):number[]{
+  const resultArray = [];
+
+  for(let i of array){
+    let result = false;
+
+    for(let o of resultArray){
+      if(i == o){
+        result = true;
+      }
+    }
+
+    if(!result){
+      resultArray.push(i)
+    }
+  }
+
+  return resultArray;
+
+}
+
+
 
 
