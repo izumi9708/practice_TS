@@ -393,5 +393,94 @@ function removeDuplicates(array:number[]):number[]{
 }
 
 
+// 配列内の数値要素の平均値を計算する関数 calculateAverage を実装してください。以下の要件を満たすようにしてください。
+
+// 関数名: calculateAverage
+// 引数: 数値の配列 array
+// 返り値: 数値型の平均値
+// 制約: 高階関数や組み込みのメソッド（reduce、forEach、reduceRight、mapなど）は使用せず、forループを使用して計算すること
+
+const numbers = [1, 2, 3, 4, 5];
+const average = calculateAverage(numbers);
+
+function calculateAverage(array:number[]):number{
+  let add:number = 0;
+
+  for(let i of array){
+    add += i;
+  }
+  
+  return add / array.length;
+}
+// console.log(average); // 出力: 3
+
+
+// 与えられた文字列が回文（前から読んでも後ろから読んでも同じ結果になる）かどうかを判定する関数 isPalindrome を実装してください。関数は以下の仕様を満たすものとします。
+
+// isPalindrome 関数は、引数として文字列を受け取り、その文字列が回文であるかどうかを真偽値で返します。
+// 回文である場合は true を、回文でない場合は false を返します。
+// 文字列の判定は、大文字と小文字を区別します。つまり、大文字と小文字が異なる場合は回文ではありません。
+
+// for ループや高階関数（map、filter、reduce など）は使用せず、ループ処理を行わない方法で実装してください。
+// 文字列を反転させるための組み込み関数（reverse、join など）は使用せずに、別のアプローチを取ってください。
+
+
+function isPalindrome(str:string):boolean{
+  let strSplit:string[] = str.split('');
+  let strArray:string[] = [];
+  let index = str.length;
+
+  for(let i of str){
+    index--
+
+    strArray.push(strSplit[index]);
+  }
+
+  let resultStr:string = '';
+  for(let i of strArray){
+      resultStr += i;
+  }
+
+  return str === resultStr ? true : false
+}
+
+// console.log(isPalindrome("level")); // 出力: true
+// console.log(isPalindrome("Hello")); // 出力: false
+// console.log(isPalindrome("A car, a man, a maraca")); // 出力: false
+// console.log(isPalindrome("racecar")); // 出力: true
+
+
+// 以下の要件を持つ関数の型情報の実装を求めます。
+
+// 要件：
+
+// 関数名: filterByProperty
+// 引数:
+// array: オブジェクトの配列
+// property: プロパティ名（文字列）
+// value: プロパティの値
+// 戻り値: property の値が value と等しいオブジェクトの配列
+
+interface Users {
+  name:string;
+  age:number
+}
+const users = [
+  { name: 'Alice', age: 25 },
+  { name: 'Bob', age: 30 },
+  { name: 'Charlie', age: 35 },
+];
+
+type FilterByProperty = <T>(array:T[],property:string,value:number) => T[];
+
+const filterByProperty:FilterByProperty = (array,property,value) => {
+  return array.filter(val => val[property] === value)
+}
+
+const filteredUsers = filterByProperty<Users>(users, 'age', 30);
+// console.log(filteredUsers);
+// 出力: [{ name: 'Bob', age: 30 }]
+
+
 
 
