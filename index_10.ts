@@ -483,4 +483,236 @@ const filteredUsers = filterByProperty<Users>(users, 'age', 30);
 
 
 
+// TypeScriptにおけるジェネリクスを使用して、配列の要素を指定の数だけ複製する関数 duplicateArrayElements の型を実装してください。
+
+// 要件:
+
+// duplicateArrayElements 関数は、array 引数と count 引数を受け取ります。
+// array 引数はジェネリクスの型パラメータ T の配列とします。
+// count 引数は複製する回数を表す数値です。
+// duplicateArrayElements 関数は、array の要素を count 回繰り返した新しい配列を返します。
+// 返される配列の要素の順序は、元の配列の順序を保持したまま複製されます。
+
+const numbers = [1, 2, 3];
+
+type DeplicateArrayElements = <T>(array:T[],count:number) => T[] ;
+
+const duplicateArrayElements:DeplicateArrayElements = <T>(array,count) => {
+  const duplicatedArray: T[] = [];
+
+  for (let i = 0; i < count; i++) {
+    duplicatedArray.push(...array);
+  }
+
+  const resultArray:T[] = [...duplicatedArray];
+  
+  return resultArray.sort();
+}
+
+const duplicatedNumbers = duplicateArrayElements(numbers, 3);
+// console.log(duplicatedNumbers);
+// 出力: [1, 1, 1, 2, 2, 2, 3, 3, 3]
+
+const fruits = ['apple', 'banana'];
+const duplicatedFruits = duplicateArrayElements(fruits, 2);
+// console.log(duplicatedFruits);
+// 出力: ['apple', 'apple', 'banana', 'banana']
+
+
+
+// 以下の条件に基づいて、与えられた数値配列から偶数のみを抽出して新しい配列を作成する関数を実装してください。
+
+// 条件:
+
+// 関数名は filterEvenNumbers とします。
+// 入力として数値の配列 numbers を受け取り、偶数のみを抽出した新しい配列を返します。
+// 抽出される偶数の順序は元の配列と同じである必要があります。
+// 元の配列に偶数が存在しない場合は、空の配列を返します
+
+
+const filterEvenNumbers = (numbers:number[]):number[] => {
+  return numbers.filter(val => val % 2 === 0)
+}
+
+const numbers1 = [1, 2, 3, 4, 5, 6];
+// console.log(filterEvenNumbers(numbers1)); // 出力: [2, 4, 6]
+
+const numbers2 = [1, 3, 5, 7];
+// console.log(filterEvenNumbers(numbers2)); // 出力: []
+
+const numbers3 = [2, 4, 6, 8];
+// console.log(filterEvenNumbers(numbers3)); // 出力: [2, 4, 6, 8]
+
+
+
+
+// 上記の問題では、filterUsersという関数を実装する必要があります。この関数は、与えられたusers配列から指定された条件に一致するユーザーのみをフィルタリングして新しい配列として返します。条件はPartial<User>型であり、User型のプロパティの一部または全部を含むことができます。条件に一致するユーザーのみが結果として返されるように実装してください。
+type User = {
+  id: string;
+  name: string;
+  age: number;
+  isAdmin: boolean;
+};
+
+type FilterUsers = (users: User[], conditions: Partial<User>) => User[];
+
+const filterUsers: FilterUsers = (users, conditions) => {
+  return users.filter(val => val.age >= conditions.age && val.isAdmin === conditions.isAdmin)
+};
+
+const users: User[] = [
+  { id: '1', name: 'Alice', age: 25, isAdmin: false },
+  { id: '2', name: 'Bob', age: 30, isAdmin: true },
+  { id: '3', name: 'Charlie', age: 20, isAdmin: false },
+  { id: '4', name: 'David', age: 35, isAdmin: true },
+];
+
+const filteredUsers = filterUsers(users, { age: 30, isAdmin: true });
+// console.log(filteredUsers);
+// 出力: [{ id: '2', name: 'Bob', age: 30, isAdmin: true }, { id: '4', name: 'David', age: 35, isAdmin: true }]
+
+
+
+// 以下の関数 groupByProperty を実装してください。
+
+type GroupByProperty = <T>(array:T[],property:keyof T) => {[key:string]:T[]}
+
+const groupByProperty: GroupByProperty = <T>(array, property) => {
+  let obj:{[key:string]:T[]} = {};
+
+  for(let i of array){
+    if(!obj[i[property]]){
+      obj[i[property]] = [i];
+
+    }else {
+      obj[i[property]] = [...obj[i[property]],i]
+    }
+  }
+
+  return obj;
+};
+
+const users2 = [
+  { id: 1, name: 'Alice', age: 25 },
+  { id: 2, name: 'Bob', age: 30 },
+  { id: 3, name: 'Charlie', age: 25 },
+  { id: 4, name: 'Dave', age: 30 }
+];
+
+interface Users2 {
+  id:number;
+  name:string;
+  age:number;
+}
+
+const groupedUsers = groupByProperty<Users2>(users2, 'age');
+// console.log(groupedUsers);
+// 出力:
+// {
+//   25: [
+//     { id: 1, name: 'Alice', age: 25 },
+//     { id: 3, name: 'Charlie', age: 25 }
+//   ],
+//   30: [
+//     { id: 2, name: 'Bob', age: 30 },
+//     { id: 4, name: 'Dave', age: 30 }
+//   ]
+// }
+
+
+// ypeScriptでジェネリック関数mergeObjectsを実装してください。この関数は、複数のオブジェクトを受け取り、それらをマージして1つのオブジェクトに結合します。オブジェクトのプロパティ名は重複しないものとします。
+
+// 要件:
+
+// mergeObjectsはジェネリック関数として実装します。引数として可変長のオブジェクトを受け取ります。
+// 各オブジェクトのプロパティを結合し、1つのオブジェクトにまとめます。
+// プロパティの値は、後に渡されたオブジェクトの値で上書きされます。
+// プロパティ名の重複がある場合は、後に渡されたオブジェクトの値が優先されます。
+// 結果のオブジェクトは、全てのプロパティを含んでいる必要があります。
+
+
+function mergeObjects<T extends object>(...objects: T[]) {
+  let obj = {};
+
+  for(let i of objects){
+    const keys = Object.keys(i);
+    
+    for(let o of keys){
+      obj[o] = i[o]
+    }
+  }
+
+  return obj;
+}
+
+type ObjType = {name:string,age:number,city:string,language:string};
+const obj1 = { name: 'Alice', age: 25 };
+const obj2 = { age: 30, city: 'Tokyo' };
+const obj3 = { city: 'Osaka', language: 'Japanese' };
+
+// const mergedObj = mergeObjects(obj1, obj2, obj3);
+// console.log(mergedObj);
+// 出力: { name: 'Alice', age: 30, city: 'Osaka', language: 'Japanese' }
+
+
+
+// TypeScriptでジェネリック関数getAverageを実装してください。この関数は、数値の配列を受け取り、その平均値を計算して返します。
+
+// 要件:
+
+// getAverageはジェネリック関数として実装します。引数として数値の配列を受け取ります。
+// 配列の要素は数値型であることが前提とされます。
+// 配列の要素の平均値を計算し、小数点以下は切り捨てた整数値として返します。
+
+
+function getAverage<T extends number>(array:T[]):number{
+  return array.reduce((a,b) => a + b,0) / array.length;
+}
+
+const numbers4 = [1, 2, 3, 4, 5];
+// console.log(getAverage(numbers4)); // 出力: 3
+
+const numbers5 = [10, 20, 30, 40, 50];
+// console.log(getAverage(numbers5)); // 出力: 30
+
+
+// TypeScriptのジェネリック関数filterArrayを実装してください。この関数は、配列と条件関数を受け取り、条件関数を満たす要素のみを抽出した新しい配列を返します。
+
+// 要件:
+
+// filterArrayはジェネリック関数として実装します。引数として配列と条件関数を受け取ります。
+// 条件関数は、配列の要素を受け取り、真偽値を返すものとします。
+// filterArrayは、条件関数を満たす要素だけを含む新しい配列を返します。
+
+function filterArray<T>(array: T[], condition: (item: T) => boolean): T[] {
+  return array.filter(val => condition(val))
+}
+
+const numbers6 = [1, 2, 3, 4, 5];
+
+function isEven(num: number): boolean {
+  return num % 2 === 0;
+}
+
+const evenNumbers = filterArray(numbers6, isEven);
+// console.log(evenNumbers); // 出力: [2, 4]
+
+
+// TypeScriptでジェネリック関数findDuplicatesを実装してください。この関数は、配列内の重複する要素を検出し、重複している要素の配列を返します。
+// findDuplicatesはジェネリック関数として実装します。引数として配列を受け取ります。
+// 配列内の重複する要素を検出し、重複している要素の配列を返します。
+// 返される配列は、重複した順序で並べられている必要があります。
+// 配列内に重複がない場合は、空の配列を返します。
+
+function findDuplicates<T>(array: T[]): T[] {
+  // 実装する
+}
+
+const numbers = [1, 2, 3, 4, 4, 5, 2, 6, 7, 5];
+const duplicates = findDuplicates(numbers);
+console.log(duplicates);
+// 出力: [4, 2, 5]
+
+
+
 
