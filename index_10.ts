@@ -716,3 +716,91 @@ console.log(duplicates);
 
 
 
+// TypeScriptでジェネリック関数findDuplicatesを実装してください。この関数は、配列内の重複する要素を検出し、重複している要素の配列を返します。
+// findDuplicatesはジェネリック関数として実装します。引数として配列を受け取ります。
+// 配列内の重複する要素を検出し、重複している要素の配列を返します。
+// 返される配列は、重複した順序で並べられている必要があります。
+// 配列内に重複がない場合は、空の配列を返します。
+
+function findDuplicates<T>(array: T[]): T[] {
+  return array.filter((val,index,array) => array.indexOf(val) !== index)
+}
+
+const numbers7 = [1, 2, 3, 4, 4, 5, 2, 6, 7, 5];
+const duplicates = findDuplicates(numbers7);
+// console.log(duplicates);
+// 出力: [4, 2, 5]
+
+
+
+// 以下の要件を満たすfilterObjects関数を実装してください。
+
+// filterObjects関数はジェネリック関数として実装します。
+// 2つの引数を受け取ります: arrayとcondition。
+// arrayはオブジェクトの配列です。
+// conditionはオブジェクトを受け取り、真偽値を返す関数です。
+// filterObjects関数は、arrayの各要素に対してcondition関数を適用し、真と評価された要素だけからなる新しい配列を返します。
+
+interface Person {
+  name: string;
+  age: number;
+}
+
+type FilterObject = <T extends Person>(array:T[],condition:(person:Person) => boolean) => T[];
+const filterObject:FilterObject = (array,condition) => {
+  return array.filter(val => condition(val))
+}
+
+const people: Person[] = [
+  { name: 'Alice', age: 25 },
+  { name: 'Bob', age: 30 },
+  { name: 'Charlie', age: 20 },
+];
+
+function isAdult(person: Person): boolean {
+  return person.age >= 18;
+}
+
+const adults = filterObject(people, isAdult);
+// console.log(adults);
+// 出力: [{ name: 'Alice', age: 25 }, { name: 'Bob', age: 30 }]
+
+
+// ジェネリック関数mergeArraysを実装してください。この関数は、可変長の配列を受け取り、それらを結合して1つの配列にします。ただし、入力配列の要素の型はすべて同じであるものとします。
+
+// 要件:
+
+// mergeArraysはジェネリック関数として実装します。引数として可変長の配列を受け取ります。
+// 受け取った配列を結合し、1つの配列にします。
+// 結果の配列は、入力配列の要素を順番に結合したものとします。
+
+type MergeArrays = <T>(...array: T[][]) => T[]; 
+const mergeArrays: MergeArrays = (...array) => {
+  const result = [];
+  const mergedArray = result.concat(...array);
+
+  return mergedArray;
+}
+
+const array1 = [1, 2, 3];
+const array2 = ['a', 'b', 'c'];
+const array3 = [true, false];
+
+const mergedArray = mergeArrays<number | string | boolean>(array1, array2, array3);
+// console.log(mergedArray);
+// 出力: [1, 2, 3, 'a', 'b', 'c', true, false]
+
+
+// 以下のコードを修正して、与えられた文字列配列（array）内の全ての要素を大文字に変換するtoUpperCaseArrayという関数を実装してください。ただし、toUpperCaseArray関数は新しい配列を返すものとします。
+
+function toUpperCaseArray(array: string[]): string[] {
+  return array.map(val => val.toUpperCase())
+}
+
+const fruits = ['apple', 'banana', 'orange'];
+const uppercasedFruits = toUpperCaseArray(fruits);
+console.log(uppercasedFruits);
+// 出力: ['APPLE', 'BANANA', 'ORANGE']
+
+
+
