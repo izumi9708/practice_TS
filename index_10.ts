@@ -804,3 +804,30 @@ console.log(uppercasedFruits);
 
 
 
+// 問題:
+// 以下の関数countOccurrencesを実装してください。この関数は、与えられた配列内で各要素が出現する回数をカウントし、その結果をオブジェクトとして返します。
+
+function countOccurrences<T>(array: T[]): { [key in T]: number } {
+  let result: { [key in T]: number } = {};
+
+  for (let i of array) {
+    if (!result[i]) {
+      result[i] = 1;
+    } else {
+      result[i] = result[i] + 1;
+    }
+  }
+
+  return result;
+}
+
+const numbers = [1, 2, 3, 4, 3, 2, 1];
+const numberOccurrences = countOccurrences(numbers);
+console.log(numberOccurrences);
+// 出力: {1: 2, 2: 2, 3: 2, 4: 1}
+
+const fruits = ['apple', 'banana', 'orange', 'banana', 'apple'];
+const fruitOccurrences = countOccurrences(fruits);
+console.log(fruitOccurrences);
+// 出力: {apple: 2, banana: 2, orange: 1}
+
