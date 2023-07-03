@@ -831,3 +831,40 @@ const fruitOccurrences = countOccurrences(fruits);
 console.log(fruitOccurrences);
 // 出力: {apple: 2, banana: 2, orange: 1}
 
+
+
+// 次の要件を満たす関数を実装してください。
+// 関数名: flattenArray
+// 入力: T[][] (ジェネリックな2次元配列)
+// 出力: T[] (フラット化された1次元配列)
+// 要件:
+// 入力として与えられた2次元配列をフラット化し、1次元配列として返します。
+// フラット化とは、入れ子になった配列を展開して1つの配列にすることを意味します。
+// 入力として与えられる2次元配列は任意の深さと長さを持つことができます。
+
+type FlattenArray = <T>(array:T[][]) => T[];
+const flattenArray:FlattenArray = (array) => {
+  const result = [];
+  const flatten = (array) => {
+    for(let i of array){
+      if(Array.isArray(i)){
+        flatten(i);
+
+      }else {
+        result.push(i)
+      }
+    }
+  }
+
+  flatten(array);
+
+  console.log(result)
+}
+
+const array1 = [1, [2, 3], [4, [5, 6]]];
+console.log(flattenArray<number>(array1)); 
+// 出力: [1, 2, 3, 4, 5, 6]
+
+const array2 = [['a', 'b'], ['c'], ['d', 'e', ['f']]];
+console.log(flattenArray<string>(array2)); // 出力: ['a', 'b', 'c', 'd', 'e', 'f']
+
